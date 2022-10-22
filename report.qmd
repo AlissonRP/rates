@@ -1,0 +1,56 @@
+---
+title: "Distribuição Kumaraswamy"
+subtitle: E suas Aplicações
+author: "Alisson Rosa, <br> Digite seu nome aqui!"
+institute: "Universidade Federal de Santa Maria"
+format: 
+  pdf:
+    include-in-header: 
+      text: |
+        \usepackage{float}
+    number-sections: true
+    keep-tex: true
+    fig-width: 5.9
+    fig-height: 2.9
+    indent: 2m
+    geometry:
+      - top=20mm
+      - left=18mm
+      - right=18mm
+      - heightrounded
+    documentclass: report
+      
+execute:
+  warning: false
+lang: pt
+
+---
+
+
+\section{\centering Introdução}
+
+
+
+
+\section{\centering A distribuição Kumaraswamy}
+
+\subsection{Quantidade Básicas}
+
+
+\subsection{Algumas aplicações}
+
+
+
+\section{\centering Análise Inicial}
+
+\subsection{Apresentação dos dados}
+
+
+\subsection{Medidas Básicas}
+
+
+\section{\centering Ajuste do Modelo}
+
+\subsection{Breve Aplicação}
+
+\section{\centering Conclusão}
