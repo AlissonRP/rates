@@ -1,6 +1,8 @@
 #%%
 import numpy as np
 from math import gamma
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 
 class Kuma:
@@ -11,7 +13,7 @@ class Kuma:
         self.beta = beta
 
     def pdf(self, x):
-        if not 0 < x < 1:
+        if (np.all(0 < x) and np.all(x < 1)) == False:
             raise ValueError("X must be between 0 and 1")
         return (
             self.alpha
@@ -21,14 +23,14 @@ class Kuma:
         )
 
     def quantile(self, u):
-        """
-        """
-        return [1 - (1 - u) ** (1 / self.beta)] ** (1 / self.alpha)
+        if (np.all(0 < u) and np.all(u < 1)) == False:
+            raise ValueError("u must be between 0 and 1")
+        return (1 - (1 - u) ** (1 / self.beta)) ** (1 / self.alpha)
 
     def cumulative(self, x):
         if not 0 < x < 1:
             raise ValueError("X must be between 0 and 1")
-        return 1 - (1 - x ** self.alpha) ** self.beta
+        return 1 - (1 - (x ** self.alpha)) ** self.beta
 
     def mean(self):
         return (self.beta * gamma(1 + (1 / self.alpha)) * gamma(self.beta)) / gamma(
@@ -40,7 +42,11 @@ class Kuma:
 
 
 #%%
-teste = Kuma(alpha=-0.5, beta=0.5)
+teste = Kuma(alpha=5, beta=1)
 
 
 #%%
+x = np.random.uniform(0, 1, 5000)
+
+
+sns.kdeplot(teste.quantile(x))
