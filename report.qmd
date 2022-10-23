@@ -3,6 +3,12 @@ title: "Distribuição Kumaraswamy"
 subtitle: E suas Aplicações
 author: "Alisson Rosa, <br> Digite seu nome aqui!"
 institute: "Universidade Federal de Santa Maria"
+abstract: "Muitas vezes estamos interessados em modelar variáveis que estão definidas   entre zero e um,
+como sabemos aonde nossa variável esta definida mas não sabemos qual dos valores será observado,
+temos portanto uma incerteza probabilística, que pode e deve ser modelada por medidas de
+ probabilidade. Aqui portanto, introduziremos a distribuição Kumaraswamy, que é uma
+ das muitas possibilidades para modelagem desse tipo de variável, encontraremos estimativas 
+ para os parâmetros da distribuição usando estimadores de máxima verossimilhança blah blah."
 format: 
   pdf:
     include-in-header: 
@@ -18,25 +24,55 @@ format:
       - left=18mm
       - right=18mm
       - heightrounded
-    documentclass: report
+    documentclass: article
       
 execute:
   warning: false
 lang: pt
-
+bibliography: docs/bib.bib
+nocite: |
+          @*
 ---
 
 
 \section{\centering Introdução}
 
+Atualmente muitos fenômenos podem ser descritos como variáveis aleatórias (va) definidas no intervalo unitário (0,1) ^[Onde parenteses indica limites  do intervalo abertos.], assim é natural que pesquisadores desenvolvam distribuições de probabilidade que abarcam esse tipo de va. Uma dessas distribuições é a Kumaraswamy, que foi introduzida em @kuma como uma alternativa ao
+modelo beta para aplicações na ́area de hidrologia. Em virtude deste fato, grande parte dos trabalhos
+empíricos desta distribuição concentra-se nessa área @nadarajah2008distribution.
 
+-------- DADOS EXPLICAÇÃO -------
 
 
 \section{\centering A distribuição Kumaraswamy}
 
+Vamos nessa seção introduzir quantidades básicas da distribuição Kumaraswamy, sendo elas sua função densidade de probabilidade (pdf), função de distribuição acumulada (cdf), função quantilica (qf), função de verossimilhança (ll) e esperança (**E**)
+
 \subsection{Quantidade Básicas}
 
+Seja X uma variável aleatória que segue uma distribuição Kumaraswamy, então sua cdf é dada por:
 
+\begin{align}
+F(x;\alpha, \beta) = 1 - (1 - x^\alpha)^\beta,  \quad 0 < x< 1
+\end{align}
+
+Onde $\alpha, \beta > 0$. Sua pdf então fica definida como:
+
+\begin{align}
+f(x;\alpha, \beta) = \dfrac{dF}{dx} =\alpha\beta x^{\alpha - 1}(1 - x^\alpha)^{\beta  - 1}, \quad 0 < x< 1
+\end{align}
+
+Sua qf, que é  a função inversa da cdf, fica definida como:
+
+\begin{align}
+Q(u;\alpha, \beta) = \bigg(1 - (1 - u)^{1/\beta}\bigg)^{\dfrac{1}{\alpha}}, \quad 0<u<1
+\end{align}
+
+É FÁCIL ver que que a esperança da distribuição Kumaraswamy é dada por  
+
+\begin{align}
+\text{E}(X) = \dfrac{\beta\Gamma\bigg(1 + \dfrac{1}{\alpha}\bigg)\Gamma(\beta)}{\Gamma\bigg(1 + \dfrac{1}{\alpha} + \beta\bigg)}
+\end{align}
 \subsection{Algumas aplicações}
 
 
@@ -54,3 +90,6 @@ lang: pt
 \subsection{Breve Aplicação}
 
 \section{\centering Conclusão}
+
+
+\section{\centering Referências}
