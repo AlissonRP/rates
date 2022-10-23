@@ -63,10 +63,17 @@ class Kuma:
             self.beta = mle[1]
         return {"alpha_est": mle[0], "beta_est": mle[1]}
 
+    def plot(self, data):
+        sns.distplot(data, bins=20, hist_kws={"edgecolor": 'black'})
+        x = np.random.uniform(0, 1, len(data))
+        sns.kdeplot(teste.quantile(x))
+        plt.ylabel("Densidade")
+        plt.legend(title='Tipo', loc='upper right', labels=['Dados', 'Distribuição'])
+
 
 #### TESTES  MANUAIS#####
 #%%
-teste = Kuma(alpha=0.2, beta=3)
+teste = Kuma(alpha=5, beta=3)
 
 
 #%%
@@ -79,16 +86,6 @@ sns.kdeplot(teste.quantile(x))
 #%%
 
 
-def vero(theta, x):
-    alpha, beta = theta
-    return -(
-        (len(x) * np.log(alpha))
-        + (len(x) * np.log(beta))
-        + ((alpha - 1) * np.sum(np.log(x)))
-        + ((beta - 1) * np.sum(np.log(1 - x**alpha)))
-    )
-
-
 x = np.random.uniform(0, 1, 5000)
 y = teste.quantile(x)
 
@@ -98,6 +95,17 @@ y = teste.quantile(x)
 #%%%
 
 
+#%%
 teste.fit([1, 2], y, change=True)
 
 #%%
+
+
+
+
+
+
+#sns.histplot(y)
+
+#%%
+teste.plot(y)
