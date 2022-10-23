@@ -3,6 +3,7 @@ import numpy as np
 from math import gamma
 import matplotlib.pyplot as plt
 import seaborn as sns
+from scipy.optimize import minimize
 
 
 class Kuma:
@@ -19,7 +20,7 @@ class Kuma:
             self.alpha
             * self.beta
             * x ** (self.alpha - 1)
-            * (1 - x ** self.alpha) ** (self.beta - 1)
+            * (1 - x**self.alpha) ** (self.beta - 1)
         )
 
     def quantile(self, u):
@@ -30,7 +31,7 @@ class Kuma:
     def cumulative(self, x):
         if not 0 < x < 1:
             raise ValueError("X must be between 0 and 1")
-        return 1 - (1 - (x ** self.alpha)) ** self.beta
+        return 1 - (1 - (x**self.alpha)) ** self.beta
 
     def mean(self):
         return (self.beta * gamma(1 + (1 / self.alpha)) * gamma(self.beta)) / gamma(
@@ -40,9 +41,32 @@ class Kuma:
     def log_vero(self, x):
         return np.sum(np.log(self.pdf(x)))
 
+    def fit(self, theta, data, change=False):
+        """
+        theta: chute inicial
+        change: Se for True, entao os parametros da classe vão ser substituidos pelos estimados
+        """
 
+        def vero(theta, x):
+            alpha, beta = theta
+            return -(
+                (len(x) * np.log(alpha))
+                + (len(x) * np.log(beta))
+                + ((alpha - 1) * np.sum(np.log(x)))
+                + ((beta - 1) * np.sum(np.log(1 - x**alpha)))
+            )
+
+        theta0 = theta
+        mle = minimize(vero, x0=theta0, method="Nelder-Mead", args=(data)).x
+        if change == True:
+            self.alpha = mle[0]
+            self.beta = mle[1]
+        return {"alpha_est": mle[0], "beta_est": mle[1]}
+
+
+#### TESTES  MANUAIS#####
 #%%
-teste = Kuma(alpha=5, beta=1)
+teste = Kuma(alpha=0.2, beta=3)
 
 
 #%%
@@ -50,3 +74,30 @@ x = np.random.uniform(0, 1, 5000)
 
 
 sns.kdeplot(teste.quantile(x))
+
+
+#%%
+
+
+def vero(theta, x):
+    alpha, beta = theta
+    return -(
+        (len(x) * np.log(alpha))
+        + (len(x) * np.log(beta))
+        + ((alpha - 1) * np.sum(np.log(x)))
+        + ((beta - 1) * np.sum(np.log(1 - x**alpha)))
+    )
+
+
+x = np.random.uniform(0, 1, 5000)
+y = teste.quantile(x)
+
+
+#%
+
+#%%%
+
+
+teste.fit([1, 2], y, change=True)
+
+#%%
