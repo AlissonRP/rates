@@ -28,6 +28,7 @@ format:
       
 execute:
   warning: false
+  echo: false
 lang: pt
 bibliography: docs/bib.bib
 nocite: |
@@ -73,6 +74,34 @@ Q(u;\alpha, \beta) = \bigg(1 - (1 - u)^{1/\beta}\bigg)^{\dfrac{1}{\alpha}}, \qua
 \begin{align}
 \text{E}(X) = \dfrac{\beta\Gamma\bigg(1 + \dfrac{1}{\alpha}\bigg)\Gamma(\beta)}{\Gamma\bigg(1 + \dfrac{1}{\alpha} + \beta\bigg)}
 \end{align}
+```{python}
+from model.Kuma import Kuma
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+```
+```{python}
+#| fig-cap: "Função densidade da  Kumaraswamy para alguns valores de parâmetros"
+#| label: fig-plt
+kuma = Kuma(0.5, 0.5)
+prm={"figure.figsize":(8, 4),
+'figure.dpi':150}
+plt.rcParams.update(prm)
+plt.rc('legend', fontsize=10)
+
+def plot_density(alpha, beta):
+  pass
+x = np.random.uniform(0, 1, 5000)
+sns.kdeplot(Kuma(0.5, 0.5).quantile(x))
+sns.kdeplot(Kuma(2, 5).quantile(x))
+sns.kdeplot(Kuma(1, 2).quantile(x))
+plt.legend(title="Parâmetros", loc="upper right", labels=["$\\alpha = 0.5, \\beta = 0.5$","$\\alpha = 2, \\beta = 5$", "$\\alpha = 1, \\beta = 2$"]);
+```
+
+
+
+
 \subsection{Algumas aplicações}
 
 

@@ -8,12 +8,18 @@ from scipy.optimize import minimize
 
 class Kuma:
     def __init__(self, alpha, beta):
+        """
+        alpha e beta sao os parametros da distribuicao
+        """
         if len([i for i in [alpha, beta] if i < 0]) > 0:
             raise ValueError("alpha and beta must be greater than zero")
         self.alpha = alpha
         self.beta = beta
 
     def pdf(self, x):
+        """
+        x: valor a se calcular a densidade
+        """
         if (np.all(0 < x) and np.all(x < 1)) == False:
             raise ValueError("X must be between 0 and 1")
         return (
@@ -63,31 +69,37 @@ class Kuma:
             self.beta = mle[1]
         return {"alpha_est": mle[0], "beta_est": mle[1]}
 
-    def plot(self, data):
-        sns.distplot(data, bins=20, hist_kws={"edgecolor": 'black'})
+    def plot(self, data, legend_local="right"):
+        """
+        legend_local: local da legenda, pois a distribuicao pode ter ambas tipo de assimetria,
+        entao pode ser necessario mover a legenda para esquerda
+        """
+        sns.distplot(data, bins=20, hist_kws={"edgecolor": "black"})
         x = np.random.uniform(0, 1, len(data))
         sns.kdeplot(teste.quantile(x))
         plt.ylabel("Densidade")
-        plt.legend(title='Tipo', loc='upper right', labels=['Dados', 'Distribuição'])
+        plt.legend(
+            title="Tipo", loc="upper" + legend_local, labels=["Dados", "Distribuição"]
+        )
 
 
 #### TESTES  MANUAIS#####
 #%%
-teste = Kuma(alpha=5, beta=3)
+# teste = Kuma(alpha=5, beta=3)
 
 
 #%%
 x = np.random.uniform(0, 1, 5000)
 
 
-sns.kdeplot(teste.quantile(x))
+# sns.kdeplot(teste.quantile(x))
 
 
 #%%
 
 
-x = np.random.uniform(0, 1, 5000)
-y = teste.quantile(x)
+# x = np.random.uniform(0, 1, 5000)
+# y = teste.quantile(x)
 
 
 #%
@@ -96,16 +108,12 @@ y = teste.quantile(x)
 
 
 #%%
-teste.fit([1, 2], y, change=True)
+# teste.fit([1, 2], y, change=True)
 
 #%%
 
 
-
-
-
-
-#sns.histplot(y)
+# sns.histplot(y)
 
 #%%
-teste.plot(y)
+# teste.plot(y)
