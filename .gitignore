@@ -2,3 +2,30 @@
 .Rhistory
 .RData
 .Ruserdata
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# Environments
+.env
+.venv
+.ds
+ds/
+env/
+venv/
+ENV/
+ds.bak/
+env.bak/
+venv.bak/

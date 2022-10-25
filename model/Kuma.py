@@ -4,6 +4,8 @@ from math import gamma
 import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy.optimize import minimize
+from inspect import signature
+import scipy.stats as stats
 
 
 class Kuma:
@@ -18,7 +20,7 @@ class Kuma:
 
     def pdf(self, x):
         """
-        x: valor a se calcular a densidade
+            x: valor a se calcular a densidade
         """
         if (np.all(0 < x) and np.all(x < 1)) == False:
             raise ValueError("X must be between 0 and 1")
@@ -36,7 +38,7 @@ class Kuma:
 
     def cumulative(self, x):
         if not 0 < x < 1:
-            raise ValueError("X must be between 0 and 1")
+           raise ValueError("X must be between 0 and 1")
         return 1 - (1 - (x**self.alpha)) ** self.beta
 
     def mean(self):
@@ -67,39 +69,37 @@ class Kuma:
         if change == True:
             self.alpha = mle[0]
             self.beta = mle[1]
-        return {"alpha_est": mle[0], "beta_est": mle[1]}
+        return self
 
-    def plot(self, data, legend_local="right"):
+    def plot(self, data):
         """
         legend_local: local da legenda, pois a distribuicao pode ter ambas tipo de assimetria,
         entao pode ser necessario mover a legenda para esquerda
         """
-        sns.distplot(data, bins=20, hist_kws={"edgecolor": "black"})
+        ax = sns.histplot(data,kde=True, stat="density", bins = 20)
+        ax.lines[0].set_color('orange')
         x = np.random.uniform(0, 1, len(data))
-        sns.kdeplot(teste.quantile(x))
+        ax = sns.kdeplot(teste.quantile(x))
         plt.ylabel("Densidade")
-        plt.legend(
-            title="Tipo", loc="upper" + legend_local, labels=["Dados", "Distribuição"]
-        )
+        plt.legend(title='Tipo', loc='upper right', labels=['Dados', 'Distribuição'])
 
 
 #### TESTES  MANUAIS#####
-#%%
-# teste = Kuma(alpha=5, beta=3)
+teste = Kuma(alpha=5, beta=3)
 
 
 #%%
 x = np.random.uniform(0, 1, 5000)
 
 
-# sns.kdeplot(teste.quantile(x))
+sns.kdeplot(teste.quantile(x))
 
 
 #%%
 
 
-# x = np.random.uniform(0, 1, 5000)
-# y = teste.quantile(x)
+x = np.random.uniform(0, 1, 5000)
+y = teste.quantile(x)
 
 
 #%
@@ -108,12 +108,18 @@ x = np.random.uniform(0, 1, 5000)
 
 
 #%%
-# teste.fit([1, 2], y, change=True)
+teste.fit([1, 2], y, change=True)
 
 #%%
 
 
-# sns.histplot(y)
+
+
+
+
+#sns.histplot(y)
 
 #%%
-# teste.plot(y)
+teste.plot(y)
+
+# %%
