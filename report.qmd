@@ -74,11 +74,20 @@ Q(u;\alpha, \beta) = \bigg(1 - (1 - u)^{1/\beta}\bigg)^{\dfrac{1}{\alpha}}, \qua
 \begin{align}
 \text{E}(X) = \dfrac{\beta\Gamma\bigg(1 + \dfrac{1}{\alpha}\bigg)\Gamma(\beta)}{\Gamma\bigg(1 + \dfrac{1}{\alpha} + \beta\bigg)}
 \end{align}
+
+A função de verossimilhança é dada por:
+
+\begin{align}
+L(\alpha, \beta; x) = \prod_{i=1}^{n}f(x;\alpha, \beta) = \alpha^n \beta^n \prod_{i=1}^{n}x_i^{\alpha - 1}\prod_{i=1}^{n}(1-x_i^{\alpha})^{\beta-1}
+\end{align}
+
 ```{python}
 from model.Kuma import Kuma
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
+from model.utils import bar_ploto
+import pandas as pd
 
 ```
 ```{python}
@@ -107,14 +116,37 @@ plt.legend(title="Parâmetros", loc="upper right", labels=["$\\alpha = 0.5, \\be
 
 
 \section{\centering Análise Inicial}
+blah blah
+
+```{python}
+df = pd.read_csv("data/desmatamento.prop.csv").drop(["Unnamed: 0"], axis=1)
+df.rename(columns={"desmatamento_pro": "prop"}, inplace=True)
+```
 
 \subsection{Apresentação dos dados}
 
+```{python}
+#| fig-cap: "Proporção média dos Estados"
+#| label: fig-states
+bar_ploto(df)
+
+
+```
 
 \subsection{Medidas Básicas}
 
 
 \section{\centering Ajuste do Modelo}
+Explicar a relação do da verossimilhança com o ajuste do modelo
+```{python}
+prop = df['prop']
+
+kuma.fit(theta = [0.5, 1], data = prop,  change=True)
+
+kuma.plot(prop)
+
+```
+
 
 \subsection{Breve Aplicação}
 

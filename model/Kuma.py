@@ -166,11 +166,10 @@ class Kuma:
         ax = sns.kdeplot(self.quantile(x))
         plt.ylabel("Densidade")
         plt.legend(
-            title="Tipo", loc="upper" + legend_local, labels=["Dados", "Distribuição"]
+            title="Tipo", loc="upper " + legend_local, labels=["Dados", "Distribuição"]
         )
 
-
-# #### TESTES  MANUAIS#####
+#### TESTES  MANUAIS#####
 # teste = Kuma(alpha=5, beta=3)
 
 
@@ -195,9 +194,6 @@ class Kuma:
 
 #%%
 # teste.fit([1, 2], y, change=True)
-
-# #%%
-
 
 # sns.histplot(y)
 
