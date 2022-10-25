@@ -17,6 +17,7 @@ class Kuma:
             raise ValueError("alpha and beta must be greater than zero")
         self.alpha = alpha
         self.beta = beta
+        self.num_parameters = len(signature(Kuma).parameters)
 
     def pdf(self, x):
         """
@@ -70,6 +71,36 @@ class Kuma:
             self.alpha = mle[0]
             self.beta = mle[1]
         return self
+    
+    def vero(self, x):
+        self.log_vero = -(
+                            (len(x) * np.log(self.alpha))
+                            + (len(x) * np.log(self.beta))
+                            + ((self.alpha - 1) * np.sum(np.log(x)))
+                            + ((self.beta - 1) * np.sum(np.log(1 - x**self.alpha)))
+                        )
+        return self
+    
+    def AIc(self):
+        self.AIC = 2*self.log_vero + 2*self.num_parameters
+        return self.AIC
+
+    def BIc(self, x):
+        self.BIC = 2*self.log_vero + self.num_parameters*log(len(x))
+        return self.BIC
+
+    def AIcc(self, x):
+        self.AICC = 2*self.log_vero + 2*self.num_parameters*len(x)/(len(x) - self.num_parameters - 1)
+        return self.AICC
+
+    def cramervonmises(self,x):
+        cdf = self.cumulative(np.sort(x))
+        y = stats.norm.ppf(cdf)
+        u = stats.norm.cdf((y-np.mean(y))/np.std(y))
+        aux = [(element - (2*np.where(np.isclose(u, element))[0])/(2*len(x)))**2 for element in u]
+        w2 = sum(aux) + 1/(12*len(x))
+        self.cramermises = w2*(1+0.5/len(x))
+        return aux, w2,u
 
     def plot(self, data):
         """
