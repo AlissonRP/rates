@@ -29,3 +29,8 @@ ENV/
 ds.bak/
 env.bak/
 venv.bak/
+
+# tests
+workflow.py
+model/ipynb_checkpoints
+model/__pycache__

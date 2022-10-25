@@ -186,7 +186,7 @@ Kumaraswamy, que é uma das muitas possibilidades para modelagem desse
 tipo de variável, encontraremos estimativas para os parâmetros da
 distribuição usando estimadores de máxima verossimilhança blah blah.
 \end{abstract}
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[enhanced, sharp corners, borderline west={3pt}{0pt}{shadecolor}, breakable, frame hidden, interior hidden, boxrule=0pt]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[breakable, frame hidden, borderline west={3pt}{0pt}{shadecolor}, boxrule=0pt, enhanced, interior hidden, sharp corners]}{\end{tcolorbox}}\fi
 
 \section{\centering Introdução}
 
@@ -236,6 +236,12 @@ Q(u;\alpha, \beta) = \bigg(1 - (1 - u)^{1/\beta}\bigg)^{\dfrac{1}{\alpha}}, \qua
 \text{E}(X) = \dfrac{\beta\Gamma\bigg(1 + \dfrac{1}{\alpha}\bigg)\Gamma(\beta)}{\Gamma\bigg(1 + \dfrac{1}{\alpha} + \beta\bigg)}
 \end{align}
 
+A função de verossimilhança é dada por:
+
+\begin{align}
+L(\alpha, \beta; x) = \prod_{i=1}^{n}f(x;\alpha, \beta) = \alpha^n \beta^n \prod_{i=1}^{n}x_i^{\alpha - 1}\prod_{i=1}^{n}(1-x_i^{\alpha})^{\beta-1}
+\end{align}
+
 \begin{figure}
 
 {\centering \includegraphics{report_files/figure-pdf/fig-plt-output-1.pdf}
@@ -251,11 +257,27 @@ valores de parâmetros}
 
 \section{\centering Análise Inicial}
 
+blah blah
+
 \subsection{Apresentação dos dados}
+
+\begin{figure}
+
+{\centering \includegraphics{report_files/figure-pdf/fig-states-output-1.pdf}
+
+}
+
+\caption{\label{fig-states}Proporção média dos Estados}
+
+\end{figure}
 
 \subsection{Medidas Básicas}
 
 \section{\centering Ajuste do Modelo}
+
+Explicar a relação do da verossimilhança com o ajuste do modelo
+
+\includegraphics{report_files/figure-pdf/cell-6-output-1.pdf}
 
 \subsection{Breve Aplicação}
 
