@@ -1,7 +1,9 @@
+# R bullshit
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
+*.Rproj
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
