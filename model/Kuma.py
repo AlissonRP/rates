@@ -21,7 +21,7 @@ class Kuma:
 
     def pdf(self, x):
         """
-            x: valor a se calcular a densidade
+        x: valor a se calcular a densidade
         """
         if (np.all(0 < x) and np.all(x < 1)) == False:
             raise ValueError("X must be between 0 and 1")
@@ -61,26 +61,28 @@ class Kuma:
             self.alpha = mle[0]
             self.beta = mle[1]
         return self
-    
+
     def vero(self, x):
         self.log_vero = -(
-                            (len(x) * np.log(self.alpha))
-                            + (len(x) * np.log(self.beta))
-                            + ((self.alpha - 1) * np.sum(np.log(x)))
-                            + ((self.beta - 1) * np.sum(np.log(1 - x**self.alpha)))
-                        )
+            (len(x) * np.log(self.alpha))
+            + (len(x) * np.log(self.beta))
+            + ((self.alpha - 1) * np.sum(np.log(x)))
+            + ((self.beta - 1) * np.sum(np.log(1 - x**self.alpha)))
+        )
         return self
-    
+
     def AIc(self):
-        self.AIC = 2*self.log_vero + 2*self.num_parameters
+        self.AIC = 2 * self.log_vero + 2 * self.num_parameters
         return self.AIC
 
     def BIc(self, x):
-        self.BIC = 2*self.log_vero + self.num_parameters*np.log(len(x))
+        self.BIC = 2 * self.log_vero + self.num_parameters * np.log(len(x))
         return self.BIC
 
     def AIcc(self, x):
-        self.AICC = 2*self.log_vero + 2*self.num_parameters*len(x)/(len(x) - self.num_parameters - 1)
+        self.AICC = 2 * self.log_vero + 2 * self.num_parameters * len(x) / (
+            len(x) - self.num_parameters - 1
+        )
         return self.AICC
 
     def cramer_vonmises(self,x):
@@ -158,10 +160,10 @@ class Kuma:
         """legend_local: local da legenda, pois a distribuicao pode ter ambas tipo de assimetria,
         entao pode ser necessario mover a legenda para esquerda
         """
-        ax = sns.histplot(data,kde=True, stat="density", bins = 20)
-        ax.lines[0].set_color('orange')
+        ax = sns.histplot(data, kde=True, stat="density", bins=20)
+        ax.lines[0].set_color("orange")
         x = np.random.uniform(0, 1, len(data))
-        ax = sns.kdeplot(teste.quantile(x))
+        ax = sns.kdeplot(self.quantile(x))
         plt.ylabel("Densidade")
         plt.legend(
             title="Tipo", loc="upper" + legend_local, labels=["Dados", "Distribuição"]
@@ -191,19 +193,15 @@ class Kuma:
 # #%%%
 
 
-# #%%
+#%%
 # teste.fit([1, 2], y, change=True)
 
 # #%%
 
 
+# sns.histplot(y)
 
-
-
-
-# #sns.histplot(y)
-
-# #%%
+#%%
 # teste.plot(y)
 
 # # %%
