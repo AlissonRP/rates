@@ -40,10 +40,7 @@ nocite: |
 
 Atualmente muitos fenômenos podem ser descritos como variáveis aleatórias (va) definidas no intervalo unitário (0,1) ^[Onde parenteses indica limites  do intervalo abertos.], assim é natural que pesquisadores desenvolvam distribuições de probabilidade que abarcam esse tipo de va. Uma dessas distribuições é a Kumaraswamy, que foi introduzida em @kuma como uma alternativa ao
 modelo beta para aplicações na ́area de hidrologia. Em virtude deste fato, grande parte dos trabalhos
-empíricos desta distribuição concentra-se nessa área @nadarajah2008distribution.
-
--------- DADOS EXPLICAÇÃO -------
-
+empíricos desta distribuição concentra-se nessa área @nadarajah2008distribution. O presente trabalho visa contribuir na expansão e utilização da Kumaraswamy, empregando modelos incondicionais para a taxa de desfloresmento em diversos munícipios da Amazônia legal, disponilizados (http://www.dpi.inpe.br/prodesdigital/prodesmunicipal.php)[aqui] pelo projeto PRODES do INPE. Assim é possível mensurar a qualidade da Kumaraswamy para modelagem dos dados propostos, para isso estamos utilizando 6 métricas frequentistas estabelecidas: AIC, BIC, CAIC, Kolmogorov-Smirnov, Cramer-Von Mises e Anderson-Darling, em contraste com a Distribuição Normal e a Distribuição Beta.
 
 \section{\centering A distribuição Kumaraswamy}
 
