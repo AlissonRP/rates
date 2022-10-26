@@ -9,6 +9,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
+*.pyc
 
 # Flask stuff:
 instance/
@@ -36,3 +37,4 @@ venv.bak/
 workflow.py
 model/ipynb_checkpoints
 model/__pycache__
+model/__pycache__/Kuma.cpython-310.pyc
