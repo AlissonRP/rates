@@ -148,7 +148,26 @@ kuma.plot(prop)
 ```
 
 
-\subsection{Breve Aplicação}
+\subsection{Aplicações e Revisão Bibliográfica}
+
+O artigo de @kuma propõe e demonstra aplicações da distribuição Kumaraswamy para variáveis 
+aleatórias e processos aleatórios derivados de processos hidrológicos. O artigo foi publicado 
+na *Journal of Hydrology*, assim é perceptível que a distribuição foi concebida para se adequar
+a dados hidrológicos. Temos como casos de suas utilizações em precipitação diária, fluxo diário, 
+reservatórios de água e análise das ondas do oceano, entre outras.
+
+Para @nadarajah2008distribution a utilização da Kumaraswamy para o campo da hidrologia, é 
+consolidada. Sendo perceptível pelas inúmeras aplicações em diversos artigos como: @sundar, 
+@fletcher e @koutsoyiannis, além de se sobressair em relação a distribuição beta, a distribuição 
+padrão para dados no (0,1), de acordo com @koutsoyiannis. Em @dey2018kumaraswamy a Kumaraswamy é 
+utilizada para a quantidade de deslocamento de líquido metálico em duas máquinas diferentes, 
+sendo superior as Distribuições Gumbel e Fréchet.
+
+É notório também a dissiminação recente do estudo da Kumaraswamy, em expansão para distribuições 
+mais complexas, como em @lemonte2013exponentiated, @mazucheli2020unit, @cribari2019inflated e 
+@sagrillo2021modified ou em suas aplicações em regressão e séries temporais, visto em 
+@pumi2020kumaraswamy, @mitnik2013kumaraswamy, @bayer2021inflated e @bayer2017kumaraswamy.
+
 
 \section{\centering Conclusão}
 
