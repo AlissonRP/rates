@@ -55,22 +55,30 @@ class Kuma:
         theta: chute inicial
         change: Se for True, entao os parametros da classe vão ser substituidos pelos estimados
         """
+        def verossimilhanca(theta, x):
+            alpha, beta = theta
+            return -(
+                (len(x) * np.log(alpha))
+                + (len(x) * np.log(beta))
+                + ((alpha - 1) * np.sum(np.log(x)))
+                + ((beta - 1) * np.sum(np.log(1 - x**alpha)))
+            )
         theta0 = theta
-        mle = minimize(self.vero, x0=theta0, method="Nelder-Mead", args=(data)).x
+        mle = minimize(verossimilhanca, x0=theta0, method="Nelder-Mead", args=(data)).x
+        
         if change == True:
             self.alpha = mle[0]
             self.beta = mle[1]
+            self.vero(data)
         return self
 
     def vero(self, x):
-        self.likelihood = -(
-            (len(x) * np.log(self.alpha))
-            + (len(x) * np.log(self.beta))
-            + ((self.alpha - 1) * np.sum(np.log(x)))
-            + ((self.beta - 1) * np.sum(np.log(1 - x**self.alpha)))
-        )
-        return self
-
+            return -(
+                    (len(x) * np.log(self.alpha))
+                    + (len(x) * np.log(self.beta))
+                    + ((self.alpha - 1) * np.sum(np.log(x)))
+                    + ((self.beta - 1) * np.sum(np.log(1 - x**self.alpha)))
+                )
     def AIC(self):
         self.aic = 2 * self.log_vero + 2 * self.num_parameters
         return self.aic
@@ -201,3 +209,4 @@ class Kuma:
 # teste.plot(y)
 
 # # %%
+
