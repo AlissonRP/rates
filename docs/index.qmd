@@ -112,7 +112,7 @@ L(\alpha, \beta; x) = \prod_{i=1}^{n}f(x;\alpha, \beta) = \alpha^n \beta^n \prod
 
 <br />
 
-* Dessa maneira, o estimadores dos parâmetros são encontrados tais quais maximizam a função $L$
+* Dessa maneira, os estimadores dos parâmetros são encontrados tais quais maximizam a função $L$
 
 <br />
 
@@ -144,7 +144,7 @@ df = pd.read_csv("data/desmatamento.prop.csv").drop(["Unnamed: 0"], axis=1)
 df.rename(columns={"desmatamento_pro": "prop"}, inplace=True)
 
 
-x = np.random.uniform(0, 1, 5000)
+x = np.random.uniform(0, 1, 50000)
 sns.kdeplot(Kuma(0.5, 0.5).quantile(x))
 sns.kdeplot(Kuma(2, 5).quantile(x))
 sns.kdeplot(Kuma(1, 2).quantile(x))
@@ -166,6 +166,15 @@ plt.legend(title="Parâmetros", loc="upper right", labels=["$\\alpha = 0.5, \\be
 
 * Explicação da criação da variável
 
+## Medidas  Básicas
+
+```{python}
+df[['prop']].describe()
+```
+
+::: footer
+prop = Proporção
+:::
 
 ## Média de desmatamento por estados
 
@@ -191,17 +200,17 @@ kuma.plot(prop)
 ## Nem tudo tem um fim
 <br />
 
-* Sim, é possível gerar números aleatórios com a distribuição Simplex
+* blah blah
 
 <br />
 
-* A distribuição 
+* A Distribuição Kumaraswamy teve um ajuste razoável com $\hat{\alpha}=0.5$ e $\hat{\beta}=1$
 
 <br />
 
 * 
 
-* Leiam o paper @zhang2016simplexreg
+* N sei oq escrever aqui ainda
 
 
 
