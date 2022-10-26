@@ -1,7 +1,7 @@
 ---
-title: "Distribuicão Kumaraswamy!"
+title: "Distribuicão Kumaraswamy"
 subtitle: "E suas aplicações"
-author: "Alisson Rosa <br> João Inácio <br> Bernardo Pereira"
+author: "Alisson Rosa <br> Bernardo Silveira <br> João Inácio <br>"
 institute: "Universidade Federal de Santa Maria"
 format: 
     revealjs:
@@ -51,7 +51,11 @@ format:
 <br />
 <br />
 
-- **Pouca existência na época de distribuições suportando dados de taxas.**
+- Foi introduzida em @kuma como uma alternativa ao  modelo beta para aplicações na área de hidrologia.
+
+<br />
+
+* Em virtude deste fato, grande parte dos trabalhos empíricos desta distribuição concentra-se nessa área @nadarajah2008distribution.
 
 <br />
 
@@ -61,9 +65,6 @@ format:
 
 
 
-::: footer
-Época = Anos 80
-:::
 
 
 ## Quantidades básicas
@@ -71,13 +72,13 @@ format:
 
 <br />
 
-- Seja X uma variável aleatória que segue uma distribuição Kumaraswamy, então sua cdf é dada por:
+- Seja X uma variável aleatória que segue uma distribuição Kumaraswamy, então sua Função de distribuição acumulada é dada por:
 
 \begin{align}
 F(x;\alpha, \beta) = 1 - (1 - x^\alpha)^\beta,  \quad 0 < x< 1
 \end{align}
 
-- E sua Funcao densidade de probabilidade (pdf) por consequenca fica dada por:
+- E sua Função densidade de probabilidade (pdf) por consequência fica dada por:
 $$f(x;\alpha, \beta) = \dfrac{dF}{dx} =\alpha\beta x^{\alpha - 1}(1 - x^\alpha)^{\beta  - 1}, \quad 0<x<1$$
 
 * Onde $\alpha, \beta > 0$
@@ -96,7 +97,7 @@ Sua qf, que é  a função inversa da cdf, fica definida como:
 Q(u;\alpha, \beta) = \bigg(1 - (1 - u)^{1/\beta}\bigg)^{\dfrac{1}{\alpha}}, \quad 0<u<1
 \end{align}
 
-É FÁCIL ver que que a esperança da distribuição Kumaraswamy é dada por  
+É **FÁCIL** ver que que a esperança da distribuição Kumaraswamy é dada por  
 
 \begin{align}
 \text{E}(X) = \dfrac{\beta\Gamma\bigg(1 + \dfrac{1}{\alpha}\bigg)\Gamma(\beta)}{\Gamma\bigg(1 + \dfrac{1}{\alpha} + \beta\bigg)}
@@ -111,24 +112,46 @@ L(\alpha, \beta; x) = \prod_{i=1}^{n}f(x;\alpha, \beta) = \alpha^n \beta^n \prod
 
 <br />
 
-
-$$\text{E}(X) = \mu$$ 
-$$\text{Var}(X) = \mu(1 - \mu) - \sqrt{\dfrac{\varphi}{2}}\exp\bigg\{\dfrac{\varphi}{\mu^2(1-\mu)^2}\bigg\}\Gamma\bigg\{\dfrac{1}{2}, \dfrac{\varphi}{2\mu^2(1-\mu^2)}\bigg\}$$
+* Dessa maneira, o estimadores dos parâmetros são encontrados tais quais maximizam a função $L$
 
 <br />
 
-Onde $\Gamma(a,b) = \int_{b}^{\infty}t^{a-1}b^tdt$
+* Nesse caso, a solução para o máximo de $L$ para os dados observados é encontrado usando a biblioteca `scipy` da linguagem Python
 
 
 
 
-<br />
-
-
-## Alguns gráficos {background-color="white"}
 
 
 
+## Densidade para alguns valores de parâmetros
+
+```{python}
+from model.Kuma import Kuma
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+from model.utils import bar_ploto
+import pandas as pd
+
+kuma = Kuma(0.5, 0.5)
+prm={"figure.figsize":(8, 4),
+'figure.dpi':150}
+plt.rcParams.update(prm)
+plt.rc('legend', fontsize=10)
+
+df = pd.read_csv("data/desmatamento.prop.csv").drop(["Unnamed: 0"], axis=1)
+df.rename(columns={"desmatamento_pro": "prop"}, inplace=True)
+
+
+x = np.random.uniform(0, 1, 5000)
+sns.kdeplot(Kuma(0.5, 0.5).quantile(x))
+sns.kdeplot(Kuma(2, 5).quantile(x))
+sns.kdeplot(Kuma(1, 2).quantile(x))
+plt.xlim([-0.009, 1.009])
+plt.legend(title="Parâmetros", loc="upper right", labels=["$\\alpha = 0.5, \\beta = 0.5$","$\\alpha = 2, \\beta = 5$", "$\\alpha = 1, \\beta = 2$"]);
+
+```
 
 
 
@@ -141,13 +164,27 @@ Onde $\Gamma(a,b) = \int_{b}^{\infty}t^{a-1}b^tdt$
 
 ## Banco de dados
 
-* Explicacao da criacao da variável
+* Explicação da criação da variável
 
 
+## Média de desmatamento por estados
 
-## Aplicação {background-color="white"}
+```{python}
+bar_ploto(df)
+```
 
-* *longitudinal study of decay of intraocular gas (C3F8)*
+## Ajuste do modelo
+
+```{python}
+
+prop = df['prop']
+
+kuma.fit(theta = [0.5, 1], data = prop,  change=True)
+
+kuma.plot(prop)
+```
+
+
 
 
 
@@ -169,9 +206,9 @@ Onde $\Gamma(a,b) = \int_{b}^{\infty}t^{a-1}b^tdt$
 
 
 ::: footer
-Terminei o trabalho e ainda não sei escrever o nome da distribuicao
+Terminei o trabalho e ainda não sei escrever o nome da distribuição
 :::
 
 ## Bibliografia
 
-![](https://media.tenor.com/OaFwdekCkuIAAAAC/evangelion-rei-plush.gif){.absolute top=370 left=100 width="100" height=290"}
+![](https://www.icegif.com/wp-content/uploads/icegif-800.gif){.absolute top=370 left=100 width="100" height=290"}

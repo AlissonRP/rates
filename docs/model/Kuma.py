@@ -169,7 +169,7 @@ class Kuma:
         entao pode ser necessario mover a legenda para esquerda
         """
         ax = sns.histplot(data, kde=True, stat="density", bins=20)
-        ax.lines[0].set_color("orange")
+        ax.lines[0].set_color("red")
         x = np.random.uniform(0, 1, len(data))
         ax = sns.kdeplot(self.quantile(x))
         plt.xlim([-0.009, 1.009])

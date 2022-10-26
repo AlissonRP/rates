@@ -91,6 +91,8 @@
 \makeatletter
 \makeatother
 \makeatletter
+\makeatother
+\makeatletter
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \AtBeginDocument{%
 \ifdefined\contentsname
@@ -186,7 +188,7 @@ Kumaraswamy, que é uma das muitas possibilidades para modelagem desse
 tipo de variável, encontraremos estimativas para os parâmetros da
 distribuição usando estimadores de máxima verossimilhança blah blah.
 \end{abstract}
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[breakable, frame hidden, borderline west={3pt}{0pt}{shadecolor}, boxrule=0pt, enhanced, interior hidden, sharp corners]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, borderline west={3pt}{0pt}{shadecolor}, sharp corners, enhanced, breakable, interior hidden, frame hidden]}{\end{tcolorbox}}\fi
 
 \section{\centering Introdução}
 
@@ -288,12 +290,12 @@ Explicar a relação do da verossimilhança com o ajuste do modelo
 \hypertarget{refs}{}
 \begin{CSLReferences}{1}{0}
 \leavevmode\vadjust pre{\hypertarget{ref-kuma}{}}%
-Kumaraswamy, Ponnambalam. 1980. {«A generalized probability density
-function for double-bounded random processes»}. \emph{Journal of
+Kumaraswamy, Ponnambalam. 1980. {"A generalized probability density
+function for double-bounded random processes"}. \emph{Journal of
 hydrology} 46 (1-2): 79--88.
 
 \leavevmode\vadjust pre{\hypertarget{ref-nadarajah2008distribution}{}}%
-Nadarajah, Saralees. 2008. {«On the distribution of Kumaraswamy»}.
+Nadarajah, Saralees. 2008. {"On the distribution of Kumaraswamy"}.
 \emph{Journal of Hydrology} 348 (3): 568--69.
 
 \leavevmode\vadjust pre{\hypertarget{ref-r}{}}%

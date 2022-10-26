@@ -9,8 +9,8 @@
 <link href="index_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.1.251">
 
-  <meta name="author" content="Alisson Rosa   João Inácio   Bernardo Pereira">
-  <title>Distribuicão Kumaraswamy!</title>
+  <meta name="author" content="Alisson Rosa   Bernardo Silveira   João Inácio  ">
+  <title>Distribuicão Kumaraswamy</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -345,9 +345,9 @@
     <div class="slides">
 
 <section id="title-slide" class="center">
-  <h1 class="title">Distribuicão Kumaraswamy!</h1>
+  <h1 class="title">Distribuicão Kumaraswamy</h1>
   <p class="subtitle">E suas aplicações</p>
-  <p class="author">Alisson Rosa <br> João Inácio <br> Bernardo Pereira</p>
+  <p class="author">Alisson Rosa <br> Bernardo Silveira <br> João Inácio <br></p>
   <p class="institute">Universidade Federal de Santa Maria</p>
 </section>
 
@@ -372,24 +372,25 @@
 <h2>Motivação</h2>
 <p><br> <br></p>
 <ul>
-<li><strong>Pouca existência na época de distribuições suportando dados de taxas.</strong></li>
+<li>Foi introduzida em <span class="citation" data-cites="kuma">Kumaraswamy (<a href="#/bibliografia" role="doc-biblioref" onclick="">1980</a>)</span> como uma alternativa ao modelo beta para aplicações na área de hidrologia.</li>
 </ul>
 <p><br></p>
-<div class="footer">
-<p>Época = Anos 80</p>
-</div>
+<ul>
+<li>Em virtude deste fato, grande parte dos trabalhos empíricos desta distribuição concentra-se nessa área <span class="citation" data-cites="nadarajah2008distribution">Nadarajah (<a href="#/bibliografia" role="doc-biblioref" onclick="">2008</a>)</span>.</li>
+</ul>
+<p><br></p>
 </section>
 <section id="quantidades-básicas" class="slide level2">
 <h2>Quantidades básicas</h2>
 <p><br></p>
 <ul>
-<li>Seja X uma variável aleatória que segue uma distribuição Kumaraswamy, então sua cdf é dada por:</li>
+<li>Seja X uma variável aleatória que segue uma distribuição Kumaraswamy, então sua Função de distribuição acumulada é dada por:</li>
 </ul>
 <p><span class="math display">\[\begin{align}
 F(x;\alpha, \beta) = 1 - (1 - x^\alpha)^\beta,  \quad 0 &lt; x&lt; 1
 \end{align}\]</span></p>
 <ul>
-<li><p>E sua Funcao densidade de probabilidade (pdf) por consequenca fica dada por: <span class="math display">\[f(x;\alpha, \beta) = \dfrac{dF}{dx} =\alpha\beta x^{\alpha - 1}(1 - x^\alpha)^{\beta  - 1}, \quad 0&lt;x&lt;1\]</span></p></li>
+<li><p>E sua Função densidade de probabilidade (pdf) por consequência fica dada por: <span class="math display">\[f(x;\alpha, \beta) = \dfrac{dF}{dx} =\alpha\beta x^{\alpha - 1}(1 - x^\alpha)^{\beta  - 1}, \quad 0&lt;x&lt;1\]</span></p></li>
 <li><p>Onde <span class="math inline">\(\alpha, \beta &gt; 0\)</span></p></li>
 </ul>
 </section>
@@ -399,7 +400,7 @@ F(x;\alpha, \beta) = 1 - (1 - x^\alpha)^\beta,  \quad 0 &lt; x&lt; 1
 <p><span class="math display">\[\begin{align}
 Q(u;\alpha, \beta) = \bigg(1 - (1 - u)^{1/\beta}\bigg)^{\dfrac{1}{\alpha}}, \quad 0&lt;u&lt;1
 \end{align}\]</span></p>
-<p>É FÁCIL ver que que a esperança da distribuição Kumaraswamy é dada por</p>
+<p>É <strong>FÁCIL</strong> ver que que a esperança da distribuição Kumaraswamy é dada por</p>
 <p><span class="math display">\[\begin{align}
 \text{E}(X) = \dfrac{\beta\Gamma\bigg(1 + \dfrac{1}{\alpha}\bigg)\Gamma(\beta)}{\Gamma\bigg(1 + \dfrac{1}{\alpha} + \beta\bigg)}
 \end{align}\]</span></p>
@@ -411,14 +412,18 @@ Q(u;\alpha, \beta) = \bigg(1 - (1 - u)^{1/\beta}\bigg)^{\dfrac{1}{\alpha}}, \qua
 L(\alpha, \beta; x) = \prod_{i=1}^{n}f(x;\alpha, \beta) = \alpha^n \beta^n \prod_{i=1}^{n}x_i^{\alpha - 1}\prod_{i=1}^{n}(1-x_i^{\alpha})^{\beta-1}
 \end{align}\]</span></p>
 <p><br></p>
-<p><span class="math display">\[\text{E}(X) = \mu\]</span> <span class="math display">\[\text{Var}(X) = \mu(1 - \mu) - \sqrt{\dfrac{\varphi}{2}}\exp\bigg\{\dfrac{\varphi}{\mu^2(1-\mu)^2}\bigg\}\Gamma\bigg\{\dfrac{1}{2}, \dfrac{\varphi}{2\mu^2(1-\mu^2)}\bigg\}\]</span></p>
+<ul>
+<li>Dessa maneira, o estimadores dos parâmetros são encontrados tais quais maximizam a função <span class="math inline">\(L\)</span></li>
+</ul>
 <p><br></p>
-<p>Onde <span class="math inline">\(\Gamma(a,b) = \int_{b}^{\infty}t^{a-1}b^tdt\)</span></p>
-<p><br></p>
+<ul>
+<li>Nesse caso, a solução para o máximo de <span class="math inline">\(L\)</span> para os dados observados é encontrado usando a biblioteca <code>scipy</code> da linguagem Python</li>
+</ul>
 </section>
-<section id="alguns-gráficos" class="slide level2" data-background-color="white">
-<h2>Alguns gráficos</h2>
-</section>
+<section id="densidade-para-alguns-valores-de-parâmetros" class="slide level2">
+<h2>Densidade para alguns valores de parâmetros</h2>
+
+<img data-src="index_files/figure-revealjs/cell-2-output-1.png" class="r-stretch"></section>
 <section>
 <section id="aplicações-ão" class="title-slide slide level1 center">
 <h1>Aplicações (ão)</h1>
@@ -427,15 +432,17 @@ L(\alpha, \beta; x) = \prod_{i=1}^{n}f(x;\alpha, \beta) = \alpha^n \beta^n \prod
 <section id="banco-de-dados" class="slide level2">
 <h2>Banco de dados</h2>
 <ul>
-<li>Explicacao da criacao da variável</li>
+<li>Explicação da criação da variável</li>
 </ul>
 </section>
-<section id="aplicação" class="slide level2" data-background-color="white">
-<h2>Aplicação</h2>
-<ul>
-<li><em>longitudinal study of decay of intraocular gas (C3F8)</em></li>
-</ul>
-</section>
+<section id="média-de-desmatamento-por-estados" class="slide level2">
+<h2>Média de desmatamento por estados</h2>
+
+<img data-src="index_files/figure-revealjs/cell-3-output-1.png" class="r-stretch"></section>
+<section id="ajuste-do-modelo" class="slide level2">
+<h2>Ajuste do modelo</h2>
+
+<img data-src="index_files/figure-revealjs/cell-4-output-1.png" class="r-stretch"></section>
 <section id="nem-tudo-tem-um-fim" class="slide level2">
 <h2>Nem tudo tem um fim</h2>
 <p><br></p>
@@ -452,12 +459,12 @@ L(\alpha, \beta; x) = \prod_{i=1}^{n}f(x;\alpha, \beta) = \alpha^n \beta^n \prod
 <li>Leiam o paper <span class="citation" data-cites="zhang2016simplexreg">(<a href="#/bibliografia" role="doc-biblioref" onclick=""><strong>zhang2016simplexreg?</strong></a>)</span></li>
 </ul>
 <div class="footer">
-<p>Terminei o trabalho e ainda não sei escrever o nome da distribuicao</p>
+<p>Terminei o trabalho e ainda não sei escrever o nome da distribuição</p>
 </div>
 </section>
 <section id="bibliografia" class="slide level2 smaller scrollable">
 <h2>Bibliografia</h2>
-<p><img data-src="https://media.tenor.com/OaFwdekCkuIAAAAC/evangelion-rei-plush.gif" class="absolute" style="top: 370px; left: 100px; width: 100px; height: 290&quot;; "></p>
+<p><img data-src="https://www.icegif.com/wp-content/uploads/icegif-800.gif" class="absolute" style="top: 370px; left: 100px; width: 100px; height: 290&quot;; "></p>
 <div class="footer footer-default">
 
 </div>

@@ -16,5 +16,6 @@ def bar_ploto(df, variable="Estado", metric='mean'):
 
     sns.set_style("whitegrid")
     ax = sns.barplot(data = desmatamento, x=variable, y="prop")
+    plt.xlim([-0.009, 1.009])
     for i in ax.containers:
         ax.bar_label(i, )
