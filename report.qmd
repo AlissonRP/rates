@@ -107,11 +107,25 @@ sns.kdeplot(Kuma(2, 5).quantile(x))
 sns.kdeplot(Kuma(1, 2).quantile(x))
 plt.legend(title="Parâmetros", loc="upper right", labels=["$\\alpha = 0.5, \\beta = 0.5$","$\\alpha = 2, \\beta = 5$", "$\\alpha = 1, \\beta = 2$"]);
 ```
+\subsection{Aplicações e Revisão Bibliográfica}
 
+O artigo de @kuma propõe e demonstra aplicações da distribuição Kumaraswamy para variáveis 
+aleatórias e processos aleatórios derivados de processos hidrológicos. O artigo foi publicado 
+na *Journal of Hydrology*, assim é perceptível que a distribuição foi concebida para se adequar
+a dados hidrológicos. Temos como casos de suas utilizações em precipitação diária, fluxo diário, 
+reservatórios de água e análise das ondas do oceano, entre outras.
 
+Para @nadarajah2008distribution a utilização da Kumaraswamy para o campo da hidrologia, é 
+consolidada. Sendo perceptível pelas inúmeras aplicações em diversos artigos como: @sundar, 
+@fletcher e @koutsoyiannis, além de se sobressair em relação a distribuição beta, a distribuição 
+padrão para dados no (0,1), de acordo com @koutsoyiannis. Em @dey2018kumaraswamy a Kumaraswamy é 
+utilizada para a quantidade de deslocamento de líquido metálico em duas máquinas diferentes, 
+sendo superior as Distribuições Gumbel e Fréchet.
 
-
-\subsection{Algumas aplicações}
+É notório também a dissiminação recente do estudo da Kumaraswamy, em expansão para distribuições 
+mais complexas, como em @lemonte2013exponentiated, @mazucheli2020unit, @cribari2019inflated e 
+@sagrillo2021modified ou em suas aplicações em regressão e séries temporais, visto em 
+@pumi2020kumaraswamy, @mitnik2013kumaraswamy, @bayer2021inflated e @bayer2017kumaraswamy.
 
 
 
@@ -137,36 +151,30 @@ bar_ploto(df)
 
 
 \section{\centering Ajuste do Modelo}
-Explicar a relação do da verossimilhança com o ajuste do modelo
+Para a verificação da adequação da distribuição Kumaraswamy para modelagem de dados de desmatamento
+iremos realizar a comparação com duas distribuições amplamente utilizadas: Distribuição Normal e a 
+Distribuição beta, a distribuição mais utilizada para variáveis aleatórias com suporte no (0,1). 
+
+A comparação foi construída utilizando 6 métricas: AIC, BIC, CAIC, Kolmogorov-Smirnov, 
+Cramer-Von Mises e Anderson-Darling, que se baseiam principalmente na verossimilhança.
+A verossimilhança a considera os parâmetros variáveis, assim a função de verossimilhança indica os
+parâmetros mais plausíveis de terem gerado a amostra. Logo, podemos verificar entre todas as 
+distribuições quais possuem as maiores verossimilhanças, tendo assim os parâmetros mais plausíveis 
+para a geração da amostra. No entanto, nota-se que todos os critérios contam outros elementos para 
+a sua construção.  
+
 ```{python}
+df['prop'] = np.where(df['prop'] >= 1, 0.99, df['prop'])
+df['prop'] = np.where(df['prop'] <= 0, 0.01, df['prop'])
 prop = df['prop']
 
 kuma.fit(theta = [0.5, 1], data = prop,  change=True)
 
 kuma.plot(prop)
 
+kuma.metrics(prop)
+
 ```
-
-
-\subsection{Aplicações e Revisão Bibliográfica}
-
-O artigo de @kuma propõe e demonstra aplicações da distribuição Kumaraswamy para variáveis 
-aleatórias e processos aleatórios derivados de processos hidrológicos. O artigo foi publicado 
-na *Journal of Hydrology*, assim é perceptível que a distribuição foi concebida para se adequar
-a dados hidrológicos. Temos como casos de suas utilizações em precipitação diária, fluxo diário, 
-reservatórios de água e análise das ondas do oceano, entre outras.
-
-Para @nadarajah2008distribution a utilização da Kumaraswamy para o campo da hidrologia, é 
-consolidada. Sendo perceptível pelas inúmeras aplicações em diversos artigos como: @sundar, 
-@fletcher e @koutsoyiannis, além de se sobressair em relação a distribuição beta, a distribuição 
-padrão para dados no (0,1), de acordo com @koutsoyiannis. Em @dey2018kumaraswamy a Kumaraswamy é 
-utilizada para a quantidade de deslocamento de líquido metálico em duas máquinas diferentes, 
-sendo superior as Distribuições Gumbel e Fréchet.
-
-É notório também a dissiminação recente do estudo da Kumaraswamy, em expansão para distribuições 
-mais complexas, como em @lemonte2013exponentiated, @mazucheli2020unit, @cribari2019inflated e 
-@sagrillo2021modified ou em suas aplicações em regressão e séries temporais, visto em 
-@pumi2020kumaraswamy, @mitnik2013kumaraswamy, @bayer2021inflated e @bayer2017kumaraswamy.
 
 
 \section{\centering Conclusão}

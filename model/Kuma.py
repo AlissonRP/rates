@@ -73,22 +73,24 @@ class Kuma:
         return self
 
     def vero(self, x):
-            return -(
-                    (len(x) * np.log(self.alpha))
-                    + (len(x) * np.log(self.beta))
-                    + ((self.alpha - 1) * np.sum(np.log(x)))
-                    + ((self.beta - 1) * np.sum(np.log(1 - x**self.alpha)))
-                )
+        self.likelihood = -(
+                            (len(x) * np.log(self.alpha))
+                            + (len(x) * np.log(self.beta))
+                            + ((self.alpha - 1) * np.sum(np.log(x)))
+                            + ((self.beta - 1) * np.sum(np.log(1 - x**self.alpha)))
+                        )
+        return self
+
     def AIC(self):
-        self.aic = 2 * self.log_vero + 2 * self.num_parameters
+        self.aic = 2 * self.likelihood + 2 * self.num_parameters
         return self.aic
 
     def BIC(self, x):
-        self.bic = 2 * self.log_vero + self.num_parameters * np.log(len(x))
+        self.bic = 2 * self.likelihood + self.num_parameters * np.log(len(x))
         return self.bic
 
     def CAIC(self, x):
-        self.aicc = 2 * self.log_vero + 2 * self.num_parameters * len(x) / (
+        self.aicc = 2 * self.likelihood + 2 * self.num_parameters * len(x) / (
             len(x) - self.num_parameters - 1
         )
         return self.aicc
@@ -162,7 +164,6 @@ class Kuma:
                         'AD' : self.ad,
                         'KS' : self.ks
                     }
-
     
     def plot(self, data, legend_local="right"):
         """legend_local: local da legenda, pois a distribuicao pode ter ambas tipo de assimetria,
