@@ -1,7 +1,7 @@
 ---
-title: "É o simplex!"
-subtitle: "Taxas e Proporções"
-author: "Alisson Rosa <br> <br>"
+title: "Distribuicão Kumaraswamy!"
+subtitle: "E suas aplicações"
+author: "Alisson Rosa <br> João Inácio <br> Bernardo Pereira"
 institute: "Universidade Federal de Santa Maria"
 format: 
     revealjs:
@@ -40,16 +40,10 @@ format:
 :::
 
 
-```{r setup, include=FALSE}
-options(htmltools.dir.version = FALSE)
-
-library(simplexreg)
-library(fastrep)
-
-```
 
 
-# Tudo tem um começo
+
+
 
 ## Motivação 
 
@@ -77,18 +71,18 @@ library(fastrep)
 
 <br />
 
+- Seja X uma variável aleatória que segue uma distribuição Kumaraswamy, então sua cdf é dada por:
+
+\begin{align}
+F(x;\alpha, \beta) = 1 - (1 - x^\alpha)^\beta,  \quad 0 < x< 1
+\end{align}
+
+- E sua Funcao densidade de probabilidade (pdf) por consequenca fica dada por:
+$$f(x;\alpha, \beta) = \dfrac{dF}{dx} =\alpha\beta x^{\alpha - 1}(1 - x^\alpha)^{\beta  - 1}, \quad 0<x<1$$
+
+* Onde $\alpha, \beta > 0$
 
 
-- Se X é r.v e tem distribuição simplex (padronizada), então sua função densidade de probabilidade (pdf) é dada por:
-
-$$f(x; \mu, \varphi)=\bigg\{\dfrac{\varphi}{2\pi x^3(1 - x)^{3}}\bigg\}^{\dfrac{1}{2}}\exp\bigg\{\dfrac{-\varphi(x - \mu)^2}{2x(1-x)\mu^2(1-\mu)^2}\bigg\}$$
-
-* Onde X e $\mu$ pertencem ao intervalo (0,1) e $\varphi > 0$
-
-
-<br />
-
-* Não tem forma fechada pra Função de distribuição acumulada (fda)
 
 
 
@@ -96,7 +90,25 @@ $$f(x; \mu, \varphi)=\bigg\{\dfrac{\varphi}{2\pi x^3(1 - x)^{3}}\bigg\}^{\dfrac{
 
 ## Quantidades Básicas
 
-Em @barndorff1991some é demonstrado algumas propriedades básicas dada a seguir:
+Sua qf, que é  a função inversa da cdf, fica definida como:
+
+\begin{align}
+Q(u;\alpha, \beta) = \bigg(1 - (1 - u)^{1/\beta}\bigg)^{\dfrac{1}{\alpha}}, \quad 0<u<1
+\end{align}
+
+É FÁCIL ver que que a esperança da distribuição Kumaraswamy é dada por  
+
+\begin{align}
+\text{E}(X) = \dfrac{\beta\Gamma\bigg(1 + \dfrac{1}{\alpha}\bigg)\Gamma(\beta)}{\Gamma\bigg(1 + \dfrac{1}{\alpha} + \beta\bigg)}
+\end{align}
+
+## Quantidades Básicas
+A função de verossimilhança é dada por:
+
+\begin{align}
+L(\alpha, \beta; x) = \prod_{i=1}^{n}f(x;\alpha, \beta) = \alpha^n \beta^n \prod_{i=1}^{n}x_i^{\alpha - 1}\prod_{i=1}^{n}(1-x_i^{\alpha})^{\beta-1}
+\end{align}
+
 <br />
 
 
@@ -108,7 +120,6 @@ $$\text{Var}(X) = \mu(1 - \mu) - \sqrt{\dfrac{\varphi}{2}}\exp\bigg\{\dfrac{\var
 Onde $\Gamma(a,b) = \int_{b}^{\infty}t^{a-1}b^tdt$
 
 
-![](https://stickerly.pstatic.net/sticker_pack/gmCtSwxEQgkehtxGX6Ohhg/0E91E6/31/2519c2c6-833e-450a-be58-edd0e0e9187e.png){.absolute top=140 left=100 width="280" height="150"}
 
 
 <br />
@@ -119,79 +130,26 @@ Onde $\Gamma(a,b) = \int_{b}^{\infty}t^{a-1}b^tdt$
 
 
 
-```{r}
-library(simplexreg)
-library(tidyverse)
-library(patchwork)
-
-
-
-
-rsimplex(n = 500, mu = 0.1, sig = 5) |> 
-  as_tibble() |> 
-  ggplot(aes(value)) + 
-  geom_density() +
-  theme_bw() +
-  labs(title = "Parametro de dispersão igual a 5") +
-  rsimplex(n = 500, mu = 0.1, sig = 0.01) |> 
-  as_tibble() |> 
-  ggplot(aes(value)) + 
-  geom_density() +
-  theme_bw() +
-  labs(title = "Parametro de dispersão igual a 0.01")
-
-
-
-```
 
 
 
 
 
-## Informações adicionais
-
-Se $\varphi^2 \to \infty$ então
-$$\dfrac{X -\mu}{\varphi\sqrt{V(\mu)}} \to N(0,1)$$
-
-
-Onde $V(\mu) = \mu^3(1-\mu)^3$
-
-* Assim pela proposição anterior, podemos calcular a acumulada/quantil quando temos o parâmetro de dispersão convergindo pra zero.
-
-* Caso contrario usamos integração numérica.
 
 
 # Aplicações (ão)
 
-## Modelo de regressão Simplex
+## Banco de dados
 
-Seja $Y_1, Y_2,... Y_n$ variáveis aleatórias independentes onde cada uma segue uma distribuição simplex com média $\mu_t$, assim o modelo de regressão simplex fica definido como:
+* Explicacao da criacao da variável
 
-$$
-g(\mu_t) = \sum_{i=1}^{k}x_{ti}\beta_i
-$$
 
-Em que o $g: (0,1) \to 	\mathbb{R}$ e os $\beta's$ são os parâmetros a serem estimados.
-
-::: footer
-Sim, existe uma restrição para o parâmetro de precisão/forma também
-:::
 
 ## Aplicação {background-color="white"}
 
 * *longitudinal study of decay of intraocular gas (C3F8)*
 
 
-```{r, echo = T}
-library(simplexreg)
-data("retinal", package = "simplexreg")
-model <- simplexreg(Gas ~ LogT + LogT2 + Level | LogT + Level | Time, corr = "AR1", id = ID, data = retinal)
-
-final_model = model |> summary()
-
-
-final_model$coefficients$mean |> fastrep::tbl()
-```
 
 ## Nem tudo tem um fim
 <br />
@@ -200,18 +158,18 @@ final_model$coefficients$mean |> fastrep::tbl()
 
 <br />
 
-* A distribuição Simplex tem  mais foco em regressão
+* A distribuição 
 
 <br />
 
-* Pode ser considerado um modelo concorrente para o modelo de regressão beta
+* 
 
 * Leiam o paper @zhang2016simplexreg
 
 
 
 ::: footer
-Mas vc sabia que o artigo da regressão beta tem #input$citações???
+Terminei o trabalho e ainda não sei escrever o nome da distribuicao
 :::
 
 ## Bibliografia
