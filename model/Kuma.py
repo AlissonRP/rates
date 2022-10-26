@@ -63,7 +63,7 @@ class Kuma:
         return self
 
     def vero(self, x):
-        self.log_vero = -(
+        self.likelihood = -(
             (len(x) * np.log(self.alpha))
             + (len(x) * np.log(self.beta))
             + ((self.alpha - 1) * np.sum(np.log(x)))
@@ -71,21 +71,21 @@ class Kuma:
         )
         return self
 
-    def AIc(self):
-        self.AIC = 2 * self.log_vero + 2 * self.num_parameters
-        return self.AIC
+    def AIC(self):
+        self.aic = 2 * self.log_vero + 2 * self.num_parameters
+        return self.aic
 
-    def BIc(self, x):
-        self.BIC = 2 * self.log_vero + self.num_parameters * np.log(len(x))
-        return self.BIC
+    def BIC(self, x):
+        self.bic = 2 * self.log_vero + self.num_parameters * np.log(len(x))
+        return self.bic
 
-    def AIcc(self, x):
-        self.AICC = 2 * self.log_vero + 2 * self.num_parameters * len(x) / (
+    def CAIC(self, x):
+        self.aicc = 2 * self.log_vero + 2 * self.num_parameters * len(x) / (
             len(x) - self.num_parameters - 1
         )
-        return self.AICC
+        return self.aicc
 
-    def cramer_vonmises(self,x):
+    def CVM(self,x):
         cdf = self.cumulative(np.sort(x))
         y = stats.norm.ppf(cdf)
         u = stats.norm.cdf((y-np.mean(y))/np.std(y))
@@ -94,7 +94,7 @@ class Kuma:
         self.cramermises = w2*(1+0.5/len(x))
         return self.cramermises
     
-    def anderson_darling(self,x):
+    def AD(self,x):
         cdf = self.cumulative(np.sort(x))
         y = stats.norm.ppf(cdf)
         u = stats.norm.cdf((y-np.mean(y))/np.std(y))
@@ -110,7 +110,7 @@ class Kuma:
         self.ad = a2*(1+0.75/len(x) + 2.25/(len(x)**2))
         return self.ad
 
-    def kolmogorov_smirnof(self,x):
+    def KS(self,x):
         cdf = self.cumulative(np.sort(x))
         aux1 = np.zeros(len(cdf))
         aux2 = np.zeros(len(cdf))
@@ -127,29 +127,29 @@ class Kuma:
             return {    
                         'alpha' : self.alpha,
                         'beta' : self.beta,
-                        'likelihood' : self.log_vero,
-                        'AIC' : self.AIC,
-                        'AICc' : self.AICC,
-                        'BIC' : self.BIC,
+                        'likelihood' : self.likelihood,
+                        'AIC' : self.aic,
+                        'AICc' : self.aicc,
+                        'BIC' : self.bic,
                         'cramer_vonmises' : self.cramermises,
-                        'AD' : self.AD,
-                        'KS' : self.KS
+                        'AD' : self.ad,
+                        'KS' : self.ks
                     }
         except:
             self.fit(theta, x, change)
-            self.vero(x).AIc()
-            self.AIcc(x)
-            self.BIc(x)
-            self.cramer_vonmises(x)
-            self.anderson_darling(x)
-            self.kolmogorov_smirnof(x)
+            self.vero(x).AIC()
+            self.CAIC(x)
+            self.BIC(x)
+            self.CVM(x)
+            self.AD(x)
+            self.KS(x)
             return {    
                         'alpha' : self.alpha,
                         'beta' : self.beta,
-                        'likelihood' : self.log_vero,
-                        'AIC' : self.AIC,
-                        'AICc' : self.AICC,
-                        'BIC' : self.BIC,
+                        'likelihood' : self.likelihood,
+                        'AIC' : self.aic,
+                        'AICc' : self.aicc,
+                        'BIC' : self.bic,
                         'cramer_vonmises' : self.cramermises,
                         'AD' : self.ad,
                         'KS' : self.ks
