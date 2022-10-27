@@ -997,7 +997,7 @@ maxi_Erf_LL
 
 EST <- rbind(est(maxi_egep,cdf_egep),est(maxi_ggp,cdf_ggp),est(maxi_bgp,cdf_bgp),est(maxi_kgp,cdf_kgp),est(maxi_EGSGu,cdf_EGSGu),
              est(maxi_EW,cdf_EW),est(maxi_BMW,cdf_BMW),est(maxi_kumaBXII,cdf_kumaBXII),est(maxi_EE,cdf_EE),
-             est(maxi_kw,cdf_kw),est(maxi_betaw,cdf_betaw),est(maxi_gammaw,cdf_gammaw),est(maxi_EGW,cdf_EGW),
+             est(maxi_kw, cdf_kw,est(maxi_betaw,cdf_betaw),est(maxi_gammaw,cdf_gammaw),est(maxi_EGW,cdf_EGW),
              est(maxi_kgama,cdf_kgama),est(maxi_betaG,cdf_betaG),est(maxi_gammaG,cdf_gammaG),est(maxi_EGgama,cdf_EGgama),
              est(maxi_Erf_We,cdf_Erf_We),est(maxi_Erf_Exp,cdf_Erf_Exp),est(maxi_Erf_K,cdf_Erf_K),
              est(maxi_Erf_Gu,cdf_Erf_Gu),est(maxi_Erf_N,cdf_Erf_N),est(maxi_Erf_Gama,cdf_Erf_Gama),

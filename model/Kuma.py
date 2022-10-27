@@ -33,7 +33,7 @@ class Kuma:
         )
 
     def quantile(self, u):
-        if (np.all(0 < u) and np.all(u < 1)) == False:
+        if (np.all(0 <= u) and np.all(u <= 1)) == False:
             raise ValueError("u must be between 0 and 1")
         return (1 - (1 - u) ** (1 / self.beta)) ** (1 / self.alpha)
 
@@ -179,8 +179,21 @@ class Kuma:
             title="Tipo", loc="upper " + legend_local, labels=["Dados", "Distribuição"]
         )
 
+    def plot_density(self, data, legend_local="right"):
+        """legend_local: local da legenda, pois a distribuicao pode ter ambas tipo de assimetria,
+        entao pode ser necessario mover a legenda para esquerda
+        """
+        ax = sns.histplot(data, kde=True, stat="density", bins=20)
+        ax.lines[0].set_color("orange")
+        ax = sns.lineplot(x=np.arange(0.01, 0.99, 0.01), y=self.pdf(np.arange(0.01, 0.99, 0.01)))
+        plt.ylabel("Densidade")
+        plt.legend(
+            title="Tipo", loc="upper " + legend_local, labels=["Distribuição dos dados", "Distribuição Teórica"]
+        )
+
+
 #### TESTES  MANUAIS#####
-# teste = Kuma(alpha=5, beta=3)
+teste = Kuma(alpha=5, beta=3)
 
 
 #%%

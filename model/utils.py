@@ -22,6 +22,8 @@ def bar_ploto(df, variable="Estado", metric='mean'):
         ax.bar_label(i, )
 
 
+
+
 def AD_beta(x, a, b):
         cdf =  stats.beta.cdf(np.sort(x), a = a, b = b)
         y = stats.norm.ppf(cdf)

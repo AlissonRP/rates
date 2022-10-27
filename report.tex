@@ -156,7 +156,7 @@
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
   pdftitle={Distribuição Kumaraswamy},
-  pdfauthor={Alisson Rosa,   Digite seu nome aqui!},
+  pdfauthor={Alisson Rosa   João Inácio   Vítor Pereira},
   pdflang={pt},
   colorlinks=true,
   linkcolor={blue},
@@ -173,7 +173,7 @@
 }
 \makeatother
 \subtitle{E suas Aplicações}
-\author{Alisson Rosa, Digite seu nome aqui!}
+\author{Alisson Rosa João Inácio Vítor Pereira}
 \date{}
 
 \begin{document}
@@ -184,11 +184,14 @@ definidas entre zero e um, como sabemos aonde nossa variável esta
 definida mas não sabemos qual dos valores será observado, temos portanto
 uma incerteza probabilística, que pode e deve ser modelada por medidas
 de probabilidade. Aqui portanto, introduziremos a distribuição
-Kumaraswamy, que é uma das muitas possibilidades para modelagem desse
-tipo de variável, encontraremos estimativas para os parâmetros da
-distribuição usando estimadores de máxima verossimilhança blah blah.
+Kumaraswamy para o ajuste dos dados de desflorestamento, que é uma das
+muitas possibilidades para modelagem desse tipo de variável,
+encontraremos estimativas para os parâmetros da distribuição usando
+estimadores de máxima verossimilhança para verificar a qualidade do
+modelo realizamos comparações com a Distribuição Beta e a Distribuição
+Normal.
 \end{abstract}
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, enhanced, borderline west={3pt}{0pt}{shadecolor}, frame hidden, sharp corners, breakable, interior hidden]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[frame hidden, sharp corners, interior hidden, breakable, enhanced, borderline west={3pt}{0pt}{shadecolor}, boxrule=0pt]}{\end{tcolorbox}}\fi
 
 \section{\centering Introdução}
 
@@ -253,12 +256,43 @@ L(\alpha, \beta; x) = \prod_{i=1}^{n}f(x;\alpha, \beta) = \alpha^n \beta^n \prod
 
 \begin{figure}
 
-{\centering \includegraphics{report_files/figure-pdf/fig-plt-output-1.pdf}
+{\centering \includegraphics{report_files/figure-pdf/fig-density1-output-1.pdf}
 
 }
 
-\caption{\label{fig-plt}Função densidade da Kumaraswamy para alguns
+\caption{\label{fig-density1}Função densidade por KDE da Kumaraswamy
+para alguns valores de parâmetros}
+
+\end{figure}
+
+\begin{figure}
+
+{\centering \includegraphics{report_files/figure-pdf/fig-density2-output-1.pdf}
+
+}
+
+\caption{\label{fig-density2}Função densidade da Kumaraswamy para alguns
 valores de parâmetros}
+
+\end{figure}
+
+\begin{figure}
+
+{\centering \includegraphics{report_files/figure-pdf/fig-kde-output-1.pdf}
+
+}
+
+\caption{\label{fig-kde}Densidade ajustada por KDE}
+
+\end{figure}
+
+\begin{figure}
+
+{\centering \includegraphics{report_files/figure-pdf/fig-theoric-density-output-1.pdf}
+
+}
+
+\caption{\label{fig-theoric-density}Ajuste da densidade teórica.}
 
 \end{figure}
 
@@ -316,8 +350,6 @@ reduzida a pequenos fragmentos.
 
 \section{\centering Análise Inicial}
 
-blah blah
-
 \subsection{Apresentação dos dados}
 
 \begin{figure}
@@ -350,18 +382,16 @@ verossimilhanças, tendo assim os parâmetros mais plausíveis para a
 geração da amostra. No entanto, nota-se que todos os critérios contam
 outros elementos para a sua construção.
 
-\includegraphics{report_files/figure-pdf/cell-6-output-1.pdf}
-
 \begin{tabular}{lrrrl}
 \toprule
-{} &  Kumaraswamy &        Beta &         Normal & Vencedor \\
+{} &  Kumaraswamy &        Beta &         Normal &     Vencedor \\
 \midrule
-0 &  -440.933936 & -443.086140 & -154637.091792 &   Normal \\
-1 &  -440.918084 & -433.819504 & -154627.825155 &   Normal \\
-2 &  -431.667299 & -443.070288 & -154637.075940 &   Normal \\
-3 &    18.106283 &    9.736648 &     767.892814 &   Normal \\
-4 &     9.691977 &    1.251566 &      64.378061 &   Normal \\
-5 &     0.088746 &    0.089166 &       0.537076 &   Normal \\
+AIC  &  -440.933936 & -443.086140 & -154637.091792 &       Normal \\
+BIC  &  -440.918084 & -433.819504 & -154627.825155 &       Normal \\
+CAIC &  -431.667299 & -443.070288 & -154637.075940 &       Normal \\
+AD   &    18.106283 &    9.736648 &     767.892814 &         Beta \\
+CVM  &     9.691977 &    1.251566 &      64.378061 &         Beta \\
+KS   &     0.088746 &    0.089166 &       0.537076 &  Kumaraswamy \\
 \bottomrule
 \end{tabular}
 

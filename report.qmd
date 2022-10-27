@@ -1,14 +1,15 @@
 ---
 title: "Distribuição Kumaraswamy"
 subtitle: E suas Aplicações
-author: "Alisson Rosa, <br> Digite seu nome aqui!"
+author: "Alisson Rosa <br> João Inácio <br> Vítor Pereira"
 institute: "Universidade Federal de Santa Maria"
-abstract: "Muitas vezes estamos interessados em modelar variáveis que estão definidas   entre zero e um,
+abstract: "Muitas vezes estamos interessados em modelar variáveis que estão definidas entre zero e um,
 como sabemos aonde nossa variável esta definida mas não sabemos qual dos valores será observado,
 temos portanto uma incerteza probabilística, que pode e deve ser modelada por medidas de
- probabilidade. Aqui portanto, introduziremos a distribuição Kumaraswamy, que é uma
- das muitas possibilidades para modelagem desse tipo de variável, encontraremos estimativas 
- para os parâmetros da distribuição usando estimadores de máxima verossimilhança blah blah."
+ probabilidade. Aqui portanto, introduziremos a distribuição Kumaraswamy para o ajuste dos dados de 
+ desflorestamento, que é uma das muitas possibilidades para modelagem desse tipo de variável,
+ encontraremos estimativas para os parâmetros da distribuição usando estimadores de máxima verossimilhança 
+ para verificar a qualidade do modelo realizamos comparações com a Distribuição Beta e a Distribuição Normal."
 format: 
   pdf:
     include-in-header: 
@@ -90,9 +91,9 @@ from scipy.optimize import minimize
 
 ```
 ```{python}
-#| fig-cap: "Função densidade da  Kumaraswamy para alguns valores de parâmetros"
-#| label: fig-plt
-kuma = Kuma(0.5, 0.5)
+#| fig-cap: "Função densidade por KDE da Kumaraswamy para alguns valores de parâmetros"
+#| label: fig-density1
+
 prm={"figure.figsize":(8, 4),
 'figure.dpi':150}
 plt.rcParams.update(prm)
@@ -106,6 +107,41 @@ sns.kdeplot(Kuma(2, 5).quantile(x))
 sns.kdeplot(Kuma(1, 2).quantile(x))
 plt.legend(title="Parâmetros", loc="upper right", labels=["$\\alpha = 0.5, \\beta = 0.5$","$\\alpha = 2, \\beta = 5$", "$\\alpha = 1, \\beta = 2$"]);
 ```
+
+```{python}
+#| fig-cap: "Função densidade da Kumaraswamy para alguns valores de parâmetros"
+#| label: fig-density2
+
+
+sns.lineplot(x = np.arange(0.01, 0.99, 0.01), y = Kuma(0.5, 0.5).pdf(np.arange(0.01, 0.99, 0.01)), label = "$\\alpha = 0.5, \\beta = 0.5$")
+sns.lineplot(x = np.arange(0.01, 0.99, 0.01), y = Kuma(2, 5).pdf(np.arange(0.01, 0.99, 0.01)), label = "$\\alpha = 2, \\beta = 5$")
+sns.lineplot(x = np.arange(0.01, 0.99, 0.01), y = Kuma(1, 2).pdf(np.arange(0.01, 0.99, 0.01)), label = "$\\alpha = 1, \\beta = 2$")
+plt.legend(title="Parâmetros", loc="upper right");
+```
+
+```{python}
+df = pd.read_csv("data/desmatamento.prop.csv").drop(["Unnamed: 0"], axis=1)
+df.rename(columns={"desmatamento_pro": "prop"}, inplace=True)
+```
+
+```{python}
+#| fig-cap: "Densidade ajustada por KDE"
+#| label: fig-kde
+kuma = Kuma(0.5, 0.5)
+df['prop'] = np.where(df['prop'] >= 1, 0.99, df['prop'])
+df['prop'] = np.where(df['prop'] <= 0, 0.01, df['prop'])
+prop = df['prop']
+kuma.fit(theta = [0.5, 1], data = prop,  change=True)
+kuma.plot(prop)
+```
+
+```{python}
+#| fig-cap: "Ajuste da densidade teórica."
+#| label: fig-theoric-density
+kuma.plot_density(prop)
+```
+
+
 \subsection{Justificativa}
 
 O artigo de @kuma propõe e demonstra aplicações da distribuição Kumaraswamy para variáveis 
@@ -148,12 +184,8 @@ que já foram reduzida a pequenos fragmentos.
 
 
 \section{\centering Análise Inicial}
-blah blah
 
-```{python}
-df = pd.read_csv("data/desmatamento.prop.csv").drop(["Unnamed: 0"], axis=1)
-df.rename(columns={"desmatamento_pro": "prop"}, inplace=True)
-```
+
 
 \subsection{Apresentação dos dados}
 
@@ -161,9 +193,9 @@ df.rename(columns={"desmatamento_pro": "prop"}, inplace=True)
 #| fig-cap: "Proporção média dos Estados"
 #| label: fig-states
 bar_ploto(df)
-
-
 ```
+
+
 
 \subsection{Medidas Básicas}
 
@@ -185,10 +217,6 @@ a sua construção.
 df['prop'] = np.where(df['prop'] >= 1, 0.99, df['prop'])
 df['prop'] = np.where(df['prop'] <= 0, 0.01, df['prop'])
 prop = df['prop']
-
-kuma.fit(theta = [0.5, 1], data = prop,  change=True)
-
-kuma.plot(prop)
 
 criterios = kuma.metrics(prop)
 criterios_kuma = [criterios['AIC'], criterios['AICc'], criterios['BIC'], criterios['cramer_vonmises'], criterios['AD'], criterios['KS']]
@@ -213,13 +241,13 @@ BIC(mle.fun, len(mle.x), len(prop))
 CAIC(mle.fun, len(mle.x), len(prop))
 criterios_beta = ([AIC(mle.fun, len(mle.x)), BIC(mle.fun, len(mle.x), len(prop)), CAIC(mle.fun, len(mle.x), len(prop)),
                     AD_beta(prop, mle.x[0], mle.x[1]), res.statistic, res1.statistic])
-vencedor = ['Normal', 'Normal', 'Normal', 'Normal', 'Normal', 'Normal']
+vencedor = ['Normal', 'Normal', 'Normal', 'Beta', 'Beta', 'Kumaraswamy']
 ```
 
 
 ```{python}
 
-pd.DataFrame({'Kumaraswamy' : criterios_kuma, 'Beta' : criterios_beta, 'Normal' : criterios_normal, 'Vencedor' : vencedor})
+pd.DataFrame({'Kumaraswamy' : criterios_kuma, 'Beta' : criterios_beta, 'Normal' : criterios_normal, 'Vencedor' : vencedor}, index = ['AIC', 'BIC', 'CAIC', 'AD', 'CVM', 'KS'])
 
 ```
 
