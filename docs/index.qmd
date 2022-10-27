@@ -1,7 +1,7 @@
 ---
 title: "Distribuicão Kumaraswamy"
 subtitle: "E suas aplicações"
-author: "Alisson Rosa <br> Bernardo Silveira <br> João Inácio <br>"
+author: "Alisson Rosa <br> Vítor Pereira <br> João Inácio <br>"
 institute: "Universidade Federal de Santa Maria"
 format: 
     revealjs:
@@ -12,7 +12,7 @@ format:
         controls: true
         width: 1190
         height: 720
-        bibliography: bib.bib
+        bibliography: model/bib.bib
         nocite: |
           @*
 ---
@@ -51,9 +51,13 @@ format:
 <br />
 <br />
 
-- Foi introduzida em @kuma como uma alternativa ao  modelo beta para aplicações na área de hidrologia.
+- Foi introduzida em @kuma como uma alternativa ao  modelo beta para aplicações na área de hidrologia;
 
-<br />
+- Como a distribuição tem atraído atenção e recente, inclusive por parte da comunidade da UFSM, resolvemos
+buscar outras modelagens por parte da Kumaraswamy;
+
+- O desfloramento é uma questão central para os próximos anos em políticas públicas, então um modelo estatístico
+para previsão e inferência, torna-se essencial para as tomadas de decisões.
 
 * Em virtude deste fato, grande parte dos trabalhos empíricos desta distribuição concentra-se nessa área @nadarajah2008distribution.
 
@@ -132,7 +136,10 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 from model.utils import bar_ploto
+from model.utils import bar_ploto, AD_beta, AD_norm, AIC, BIC, CAIC, llnorm, betaNLL
 import pandas as pd
+from scipy import stats
+from scipy.optimize import minimize
 
 kuma = Kuma(0.5, 0.5)
 prm={"figure.figsize":(8, 4),
@@ -154,17 +161,24 @@ plt.legend(title="Parâmetros", loc="upper right", labels=["$\\alpha = 0.5, \\be
 ```
 
 
-
-
-
-
-
-
 # Aplicações (ão)
 
 ## Banco de dados
 
-* Explicação da criação da variável
+Nosso banco é proveniente do projeto PRODES do INPE disponilizado [aqui](http://www.dpi.inpe.br/prodesdigital/prodesmunicipal.php). Sendo transformado por nós ficando com apenas três variáveis:
+
+<br />
+<br />
+
+- Taxa de desflorestamento: Área desmatada até 2021 sobre Área do município;
+- Estado;
+- Município.
+<br />
+
+::: footer
+Taxa maior que 1?
+:::
+
 
 ## Medidas  Básicas
 
@@ -185,14 +199,47 @@ bar_ploto(df)
 ## Ajuste do modelo
 
 ```{python}
-
+df['prop'] = np.where(df['prop'] >= 1, 0.99, df['prop'])
+df['prop'] = np.where(df['prop'] <= 0, 0.01, df['prop'])
 prop = df['prop']
 
 kuma.fit(theta = [0.5, 1], data = prop,  change=True)
 
 kuma.plot(prop)
+
+criterios = kuma.metrics(prop)
+criterios_kuma = [criterios['AIC'], criterios['AICc'], criterios['BIC'], criterios['cramer_vonmises'], criterios['AD'], criterios['KS']]
+theta0 = [0.5, 1]
+mle = minimize(llnorm, x0=theta0, method="Nelder-Mead", args=(prop))
+res = stats.cramervonmises(prop, 'norm',  args=(mle.x[0], mle.x[1]))
+res1 = stats.kstest(prop, 'norm',  args=(mle.x[0], mle.x[1]))
+AD_norm(prop, mle.x[0], mle.x[1])
+AIC(mle.fun, len(mle.x))
+BIC(mle.fun, len(mle.x), len(prop))
+CAIC(mle.fun, len(mle.x), len(prop))
+criterios = kuma.metrics(prop)
+criterios_normal = ([AIC(mle.fun, len(mle.x)), BIC(mle.fun, len(mle.x), len(prop)), CAIC(mle.fun, len(mle.x), len(prop)),
+                    AD_norm(prop, mle.x[0], mle.x[1]), res.statistic, res1.statistic])
+
+mle = minimize(betaNLL, x0=theta0, method="Nelder-Mead", args=(prop))
+res = stats.cramervonmises(prop, 'beta',  args=(mle.x[0], mle.x[1]))
+res1 = stats.kstest(prop, 'beta',  args=(mle.x[0], mle.x[1]))
+AD_beta(prop, mle.x[0], mle.x[1])
+AIC(mle.fun, len(mle.x))
+BIC(mle.fun, len(mle.x), len(prop))
+CAIC(mle.fun, len(mle.x), len(prop))
+criterios_beta = ([AIC(mle.fun, len(mle.x)), BIC(mle.fun, len(mle.x), len(prop)), CAIC(mle.fun, len(mle.x), len(prop)),
+                    AD_beta(prop, mle.x[0], mle.x[1]), res.statistic, res1.statistic])
+vencedor = ['Normal', 'Normal', 'Normal', 'Normal', 'Normal', 'Normal']
 ```
 
+## Métricas para cada distribuição
+
+```{python}
+
+pd.DataFrame({'Kumaraswamy' : criterios_kuma, 'Beta' : criterios_beta, 'Normal' : criterios_normal, 'Vencedor' : vencedor})
+
+```
 
 
 
@@ -200,17 +247,16 @@ kuma.plot(prop)
 ## Nem tudo tem um fim
 <br />
 
-* blah blah
+* Perdeu em todas as métricas para Normal, mas teve um ajuste razoável em comparação com a Beta;
 
 <br />
 
-* A Distribuição Kumaraswamy teve um ajuste razoável com $\hat{\alpha}=0.5$ e $\hat{\beta}=1$
+* Distribuição Kumaraswamy teve um ajuste razoável com $\hat{\alpha}=0.5$ e $\hat{\beta}=1$;
 
 <br />
 
-* 
 
-* N sei oq escrever aqui ainda
+* Um competidora com as distribuições no (0,1) que com covariáveis pode ter melhor desempenho.
 
 
 
@@ -218,6 +264,6 @@ kuma.plot(prop)
 Terminei o trabalho e ainda não sei escrever o nome da distribuição
 :::
 
-## Bibliografia
+## Bibliografia {.scrollable}
 
 ![](https://www.icegif.com/wp-content/uploads/icegif-800.gif){.absolute top=370 left=100 width="100" height=290"}

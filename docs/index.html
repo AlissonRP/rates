@@ -1,9 +1,15 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-  <meta charset="utf-8">
-  <meta name="generator" content="quarto-0.9.483">
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/tabby.min.js"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.1.251">
 
-  <meta name="author" content="Alisson Rosa   Bernardo Silveira   João Inácio  ">
+  <meta name="author" content="Alisson Rosa   Vítor Pereira   João Inácio  ">
   <title>Distribuicão Kumaraswamy</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -13,10 +19,15 @@
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
-    span.underline{text-decoration: underline;}
-    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
     div.csl-bib-body { }
     div.csl-entry {
       clear: both;
@@ -331,22 +342,15 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
   <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
-<script src="index_files/libs/clipboard/clipboard.min.js"></script>
-<script src="index_files/libs/quarto-html/tabby.min.js"></script>
-<script src="index_files/libs/quarto-html/popper.min.js"></script>
-<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="index_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet">
-<link href="index_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 </head>
-<body>
+<body class="quarto-light">
   <div class="reveal">
     <div class="slides">
 
 <section id="title-slide" class="center">
   <h1 class="title">Distribuicão Kumaraswamy</h1>
   <p class="subtitle">E suas aplicações</p>
-  <p class="author">Alisson Rosa <br> Bernardo Silveira <br> João Inácio <br></p>
+  <p class="author">Alisson Rosa <br> Vítor Pereira <br> João Inácio <br></p>
   <p class="institute">Universidade Federal de Santa Maria</p>
 </section>
 
@@ -371,11 +375,10 @@
 <h2>Motivação</h2>
 <p><br> <br></p>
 <ul>
-<li>Foi introduzida em <span class="citation" data-cites="kuma">Kumaraswamy (<a href="#/ref-kuma" role="doc-biblioref" onclick="return false;">1980</a>)</span> como uma alternativa ao modelo beta para aplicações na área de hidrologia.</li>
-</ul>
-<p><br></p>
-<ul>
-<li>Em virtude deste fato, grande parte dos trabalhos empíricos desta distribuição concentra-se nessa área <span class="citation" data-cites="nadarajah2008distribution">Nadarajah (<a href="#/ref-nadarajah2008distribution" role="doc-biblioref" onclick="return false;">2008</a>)</span>.</li>
+<li><p>Foi introduzida em <span class="citation" data-cites="kuma">Kumaraswamy (<a href="#/bibliografia" role="doc-biblioref" onclick="">1980</a>)</span> como uma alternativa ao modelo beta para aplicações na área de hidrologia;</p></li>
+<li><p>Como a distribuição tem atraído atenção e recente, inclusive por parte da comunidade da UFSM, resolvemos buscar outras modelagens por parte da Kumaraswamy;</p></li>
+<li><p>O desfloramento é uma questão central para os próximos anos em políticas públicas, então um modelo estatístico para previsão e inferência, torna-se essencial para as tomadas de decisões.</p></li>
+<li><p>Em virtude deste fato, grande parte dos trabalhos empíricos desta distribuição concentra-se nessa área <span class="citation" data-cites="nadarajah2008distribution">Nadarajah (<a href="#/bibliografia" role="doc-biblioref" onclick="">2008</a>)</span>.</p></li>
 </ul>
 <p><br></p>
 </section>
@@ -389,11 +392,8 @@
 F(x;\alpha, \beta) = 1 - (1 - x^\alpha)^\beta,  \quad 0 &lt; x&lt; 1
 \end{align}\]</span></p>
 <ul>
-<li>E sua Função densidade de probabilidade (pdf) por consequência fica dada por:</li>
-</ul>
-<p><span class="math display">\[f(x;\alpha, \beta) = \dfrac{dF}{dx} =\alpha\beta x^{\alpha - 1}(1 - x^\alpha)^{\beta  - 1}, \quad 0&lt;x&lt;1\]</span></p>
-<ul>
-<li>Onde <span class="math inline">\(\alpha, \beta &gt; 0\)</span></li>
+<li><p>E sua Função densidade de probabilidade (pdf) por consequência fica dada por: <span class="math display">\[f(x;\alpha, \beta) = \dfrac{dF}{dx} =\alpha\beta x^{\alpha - 1}(1 - x^\alpha)^{\beta  - 1}, \quad 0&lt;x&lt;1\]</span></p></li>
+<li><p>Onde <span class="math inline">\(\alpha, \beta &gt; 0\)</span></p></li>
 </ul>
 </section>
 <section id="quantidades-básicas-1" class="slide level2">
@@ -433,14 +433,21 @@ L(\alpha, \beta; x) = \prod_{i=1}^{n}f(x;\alpha, \beta) = \alpha^n \beta^n \prod
 </section>
 <section id="banco-de-dados" class="slide level2">
 <h2>Banco de dados</h2>
+<p>Nosso banco é proveniente do projeto PRODES do INPE disponilizado <a href="http://www.dpi.inpe.br/prodesdigital/prodesmunicipal.php">aqui</a>. Sendo transformado por nós ficando com apenas três variáveis:</p>
+<p><br> <br></p>
 <ul>
-<li>Explicação da criação da variável</li>
+<li>Taxa de desflorestamento: Área desmatada até 2021 sobre Área do município;</li>
+<li>Estado;</li>
+<li>Município. <br></li>
 </ul>
+<div class="footer">
+<p>Taxa maior que 1?</p>
+</div>
 </section>
 <section id="medidas-básicas" class="slide level2">
 <h2>Medidas Básicas</h2>
 <div class="cell" data-execution_count="2">
-<div class="cell-output cell-output-display" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="12">
 
 <div>
 <style scoped="">
@@ -513,26 +520,103 @@ L(\alpha, \beta; x) = \prod_{i=1}^{n}f(x;\alpha, \beta) = \alpha^n \beta^n \prod
 <h2>Ajuste do modelo</h2>
 
 <img data-src="index_files/figure-revealjs/cell-5-output-1.png" class="r-stretch"></section>
+<section id="métricas-para-cada-distribuição" class="slide level2">
+<h2>Métricas para cada distribuição</h2>
+<div class="cell" data-execution_count="5">
+<div class="cell-output cell-output-display" data-execution_count="15">
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Kumaraswamy</th>
+      <th>Beta</th>
+      <th>Normal</th>
+      <th>Vencedor</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-440.933936</td>
+      <td>-443.086140</td>
+      <td>-154637.091792</td>
+      <td>Normal</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>-440.918084</td>
+      <td>-433.819504</td>
+      <td>-154627.825155</td>
+      <td>Normal</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>-431.667299</td>
+      <td>-443.070288</td>
+      <td>-154637.075940</td>
+      <td>Normal</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>18.106283</td>
+      <td>9.736648</td>
+      <td>767.892814</td>
+      <td>Normal</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>9.691977</td>
+      <td>1.251566</td>
+      <td>64.378061</td>
+      <td>Normal</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>0.088746</td>
+      <td>0.089166</td>
+      <td>0.537076</td>
+      <td>Normal</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
 <section id="nem-tudo-tem-um-fim" class="slide level2">
 <h2>Nem tudo tem um fim</h2>
 <p><br></p>
 <ul>
-<li>blah blah</li>
+<li>Perdeu em todas as métricas para Normal, mas teve um ajuste razoável em comparação com a Beta;</li>
 </ul>
 <p><br></p>
 <ul>
-<li>A Distribuição Kumaraswamy teve um ajuste razoável com <span class="math inline">\(\hat{\alpha}=0.5\)</span> e <span class="math inline">\(\hat{\beta}=1\)</span></li>
+<li>Distribuição Kumaraswamy teve um ajuste razoável com <span class="math inline">\(\hat{\alpha}=0.5\)</span> e <span class="math inline">\(\hat{\beta}=1\)</span>;</li>
 </ul>
 <p><br></p>
 <ul>
-<li></li>
-<li>N sei oq escrever aqui ainda</li>
+<li>Um competidora com as distribuições no (0,1) que com covariáveis pode ter melhor desempenho.</li>
 </ul>
 <div class="footer">
 <p>Terminei o trabalho e ainda não sei escrever o nome da distribuição</p>
 </div>
 </section>
-<section id="bibliografia" class="slide level2 smaller scrollable">
+<section id="bibliografia" class="slide level2 scrollable smaller">
 <h2>Bibliografia</h2>
 <p><img data-src="https://www.icegif.com/wp-content/uploads/icegif-800.gif" class="absolute" style="top: 370px; left: 100px; width: 100px; height: 290&quot;; "></p>
 <div class="footer footer-default">
@@ -765,6 +849,24 @@ R Core Team. 2022. <em>R: A Language and Environment for Statistical Computing</
     </script>
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
       const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
       tabsets.forEach(function(tabset) {
         const tabby = new Tabby('#' + tabset.id);
@@ -813,7 +915,8 @@ R Core Team. 2022. <em>R: A Language and Environment for Statistical Computing</
       for (var i=0; i<noterefs.length; i++) {
         const ref = noterefs[i];
         tippyHover(ref, function() {
-          let href = ref.getAttribute('href');
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
           try { href = new URL(href).hash; } catch {}
           const id = href.replace(/^#\/?/, "");
           const note = window.document.getElementById(id);
