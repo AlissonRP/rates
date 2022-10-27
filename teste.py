@@ -49,3 +49,5 @@ criterios_beta = ([AIC(mle.fun, len(mle.x)), BIC(mle.fun, len(mle.x), len(prop))
                     AD_beta(prop, mle.x[0], mle.x[1]), res.statistic, res1.statistic])
 # stats.cramervonmises(prop, 'beta')
 #%%
+bar_ploto(df)
+# %%
