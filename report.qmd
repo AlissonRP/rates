@@ -83,8 +83,10 @@ from model.Kuma import Kuma
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
-from model.utils import bar_ploto
+from model.utils import bar_ploto, AD_beta, AD_norm, AIC, BIC, CAIC, llnorm, betaNLL
 import pandas as pd
+from scipy import stats
+from scipy.optimize import minimize
 
 ```
 ```{python}
@@ -104,7 +106,7 @@ sns.kdeplot(Kuma(2, 5).quantile(x))
 sns.kdeplot(Kuma(1, 2).quantile(x))
 plt.legend(title="Parâmetros", loc="upper right", labels=["$\\alpha = 0.5, \\beta = 0.5$","$\\alpha = 2, \\beta = 5$", "$\\alpha = 1, \\beta = 2$"]);
 ```
-\subsection{Aplicações e Revisão Bibliográfica}
+\subsection{Justificativa}
 
 O artigo de @kuma propõe e demonstra aplicações da distribuição Kumaraswamy para variáveis 
 aleatórias e processos aleatórios derivados de processos hidrológicos. O artigo foi publicado 
@@ -123,6 +125,25 @@ sendo superior as Distribuições Gumbel e Fréchet.
 mais complexas, como em @lemonte2013exponentiated, @mazucheli2020unit, @cribari2019inflated e 
 @sagrillo2021modified ou em suas aplicações em regressão e séries temporais, visto em 
 @pumi2020kumaraswamy, @mitnik2013kumaraswamy, @bayer2021inflated e @bayer2017kumaraswamy.
+
+Assim é factível a falta de ajustes da Distribuição Kumaraswamy em outras áreas de estudo, 
+visto que a Kumaraswamy tem dissiminação acadêmica exponencial recentemente, com admiráveis
+contribuições da UFSM, em artigos supracitados. Decidimos contribuir para um maior estudo da
+distribuição em outra área ambiental, o desmatamento, pensando especificamente na Amazônia
+brasileira.
+
+O estudo e modelos com bons ajustes de desmatamento e desflorestamento, impactam a vida no
+mundo todo, tanto humana quanto não humana. Bons modelos conseguem prever e informar quais
+variáveis mais impactam nos desmatamento, possibilitando verificar sua evolução conforme o 
+tempo. Sendo útil para construção de políticas públicas, visando tomadas de decisão mais 
+eficientes.
+
+O desflorestamento é questão com importância ambiental, social, econômica e até política, pois a
+floresta amazônica tem seu papel no armazenamento de carbono, evitando o aquecimento global, na reciclagem 
+de água e na manutenção da biodiversidade. Além de fornecerem uma grande variedade de produtos materiais e 
+de sustento para as populações locais. Mesmo com áreas com grandes partes preservadas, há impacto na biodiversidade, 
+pois a distribuição das espécies não é uniforme. Muitas espécies têm áreas de ocorrência restritas a partes 
+que já foram reduzida a pequenos fragmentos.
 
 
 
@@ -169,7 +190,36 @@ kuma.fit(theta = [0.5, 1], data = prop,  change=True)
 
 kuma.plot(prop)
 
-kuma.metrics(prop)
+criterios = kuma.metrics(prop)
+criterios_kuma = [criterios['AIC'], criterios['AICc'], criterios['BIC'], criterios['cramer_vonmises'], criterios['AD'], criterios['KS']]
+theta0 = [0.5, 1]
+mle = minimize(llnorm, x0=theta0, method="Nelder-Mead", args=(prop))
+res = stats.cramervonmises(prop, 'norm',  args=(mle.x[0], mle.x[1]))
+res1 = stats.kstest(prop, 'norm',  args=(mle.x[0], mle.x[1]))
+AD_norm(prop, mle.x[0], mle.x[1])
+AIC(mle.fun, len(mle.x))
+BIC(mle.fun, len(mle.x), len(prop))
+CAIC(mle.fun, len(mle.x), len(prop))
+criterios = kuma.metrics(prop)
+criterios_normal = ([AIC(mle.fun, len(mle.x)), BIC(mle.fun, len(mle.x), len(prop)), CAIC(mle.fun, len(mle.x), len(prop)),
+                    AD_norm(prop, mle.x[0], mle.x[1]), res.statistic, res1.statistic])
+
+mle = minimize(betaNLL, x0=theta0, method="Nelder-Mead", args=(prop))
+res = stats.cramervonmises(prop, 'beta',  args=(mle.x[0], mle.x[1]))
+res1 = stats.kstest(prop, 'beta',  args=(mle.x[0], mle.x[1]))
+AD_beta(prop, mle.x[0], mle.x[1])
+AIC(mle.fun, len(mle.x))
+BIC(mle.fun, len(mle.x), len(prop))
+CAIC(mle.fun, len(mle.x), len(prop))
+criterios_beta = ([AIC(mle.fun, len(mle.x)), BIC(mle.fun, len(mle.x), len(prop)), CAIC(mle.fun, len(mle.x), len(prop)),
+                    AD_beta(prop, mle.x[0], mle.x[1]), res.statistic, res1.statistic])
+vencedor = ['Normal', 'Normal', 'Normal', 'Normal', 'Normal', 'Normal']
+```
+
+
+```{python}
+
+pd.DataFrame({'Kumaraswamy' : criterios_kuma, 'Beta' : criterios_beta, 'Normal' : criterios_normal, 'Vencedor' : vencedor})
 
 ```
 
@@ -177,4 +227,4 @@ kuma.metrics(prop)
 \section{\centering Conclusão}
 
 
-\section{\centering Referências}
+\section{\centering Referências} 
