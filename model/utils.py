@@ -4,25 +4,28 @@ import seaborn as sns
 from scipy import stats
 import numpy as np
 
-def bar_ploto(df, variable="Estado", metric='mean'):
+def bar_ploto(df, x, y, variable="Estado", metric='mean', hue = None, legend = 'upper right'):
     """
     metric: pode ser mean, min, max etc, e interessante pois tem municipios com prop=1
     """
-    desmatamento = (df.groupby(variable, as_index=False)
-    .agg(metric)
-    .sort_values(['prop'], ascending=False))
+    if hue is None:
+        desmatamento = (df.groupby(variable, as_index=False)
+        .agg(metric)
+        .sort_values(['prop'], ascending=False))
+    else:
+        desmatamento = (df.groupby([variable, hue], as_index=False)
+        .agg(metric)
+        .sort_values(['prop'], ascending=False))
 
 
     desmatamento['prop'] = round(desmatamento['prop'], 2)
 
     sns.set_style("whitegrid")
-    ax = sns.barplot(data = desmatamento, x=variable, y="prop")
-    # plt.xlim([-0.009, 1.009])
+    ax = sns.barplot(data = desmatamento, x=x, y=y, hue = hue)
+    ax.set_label(hue)
+    ax.legend(title = hue, loc = legend)
     for i in ax.containers:
         ax.bar_label(i, )
-
-
-
 
 def AD_beta(x, a, b):
         cdf =  stats.beta.cdf(np.sort(x), a = a, b = b)

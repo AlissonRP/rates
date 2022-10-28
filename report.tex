@@ -191,7 +191,7 @@ estimadores de máxima verossimilhança para verificar a qualidade do
 modelo realizamos comparações com a Distribuição Beta e a Distribuição
 Normal.
 \end{abstract}
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[frame hidden, sharp corners, interior hidden, breakable, enhanced, borderline west={3pt}{0pt}{shadecolor}, boxrule=0pt]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[interior hidden, frame hidden, breakable, enhanced, boxrule=0pt, borderline west={3pt}{0pt}{shadecolor}, sharp corners]}{\end{tcolorbox}}\fi
 
 \section{\centering Introdução}
 
@@ -207,7 +207,7 @@ Nadarajah (2008). O presente trabalho visa contribuir na expansão e
 utilização da Kumaraswamy, empregando modelos incondicionais para a taxa
 de desfloresmento em diversos munícipios da Amazônia legal,
 disponilizados
-(http://www.dpi.inpe.br/prodesdigital/prodesmunicipal.php){[}aqui{]}
+\href{http://www.dpi.inpe.br/prodesdigital/prodesmunicipal.php}{aqui}
 pelo projeto PRODES do INPE. Assim é possível mensurar a qualidade da
 Kumaraswamy para modelagem dos dados propostos, para isso estamos
 utilizando 6 métricas frequentistas estabelecidas: AIC, BIC, CAIC,
@@ -254,7 +254,19 @@ A função de verossimilhança é dada por:
 L(\alpha, \beta; x) = \prod_{i=1}^{n}f(x;\alpha, \beta) = \alpha^n \beta^n \prod_{i=1}^{n}x_i^{\alpha - 1}\prod_{i=1}^{n}(1-x_i^{\alpha})^{\beta-1}
 \end{align}
 
-\begin{figure}
+Para verificar as possibilidades de utilizações da Kumaraswamy em
+contextos práticos é necessário conhecimento de sua densidade, assim nas
+Figuras Figura~\ref{fig-density1} e Figura~\ref{fig-density2}. As
+figuras referem-se a Estimativa da Densidade Kernel ou \emph{Kernel
+Density Estimation} (KDE), método não-paramétrico para estimação da
+função densidade com suavização e a Densidade Teórica, utilizando a
+implementação da função densidade de probabilidade desenvolvida na
+classe \texttt{Kuma} do python dos próprios autores. Podemos observar a
+flexibilidade da Densidade da Kumaraswamy em 3 casos distintos: * Caso
+1: \(\alpha = 0.5\) e \(\beta = 0.5\); * Caso 2: \(\alpha = 2\) e
+\(\beta = 5\); * Caso 3: \(\alpha = 1\) e \(\beta = 2\).
+
+\begin{figure}[H]
 
 {\centering \includegraphics{report_files/figure-pdf/fig-density1-output-1.pdf}
 
@@ -265,7 +277,7 @@ para alguns valores de parâmetros}
 
 \end{figure}
 
-\begin{figure}
+\begin{figure}[H]
 
 {\centering \includegraphics{report_files/figure-pdf/fig-density2-output-1.pdf}
 
@@ -276,23 +288,17 @@ valores de parâmetros}
 
 \end{figure}
 
-\begin{figure}
+A Figura Figura~\ref{fig-cumulative} demonstra a curva da função
+acumulada para os casos supracitados.
 
-{\centering \includegraphics{report_files/figure-pdf/fig-kde-output-1.pdf}
+\begin{figure}[H]
 
-}
-
-\caption{\label{fig-kde}Densidade ajustada por KDE}
-
-\end{figure}
-
-\begin{figure}
-
-{\centering \includegraphics{report_files/figure-pdf/fig-theoric-density-output-1.pdf}
+{\centering \includegraphics{report_files/figure-pdf/fig-cumulative-output-1.pdf}
 
 }
 
-\caption{\label{fig-theoric-density}Ajuste da densidade teórica.}
+\caption{\label{fig-cumulative}Função acumulada da Kumaraswamy para
+alguns valores de parâmetros}
 
 \end{figure}
 
@@ -325,7 +331,7 @@ Mitnik e Baek (2013), Fábio M. Bayer, Cribari-Neto, e Santos (2021) e
 Fábio Mariano Bayer, Bayer, e Pumi (2017).
 
 Assim é factível a falta de ajustes da Distribuição Kumaraswamy em
-outras áreas de estudo, visto que a Kumaraswamy tem dissiminação
+outras áreas de estudo, visto que a distribuição tem dissiminação
 acadêmica exponencial recentemente, com admiráveis contribuições da
 UFSM, em artigos supracitados. Decidimos contribuir para um maior estudo
 da distribuição em outra área ambiental, o desmatamento, pensando
@@ -348,17 +354,98 @@ biodiversidade, pois a distribuição das espécies não é uniforme. Muitas
 espécies têm áreas de ocorrência restritas a partes que já foram
 reduzida a pequenos fragmentos.
 
-\section{\centering Análise Inicial}
+\section{\centering Apresentação dos dados}
 
-\subsection{Apresentação dos dados}
+\begin{figure}[H]
 
-\begin{figure}
-
-{\centering \includegraphics{report_files/figure-pdf/fig-states-output-1.pdf}
+{\centering \includegraphics{report_files/figure-pdf/fig-num-city-output-1.pdf}
 
 }
 
-\caption{\label{fig-states}Proporção média dos Estados}
+\caption{\label{fig-num-city}Número de municípios em cada estado da
+Amazônia Legal.}
+
+\end{figure}
+
+\begin{figure}[H]
+
+{\centering \includegraphics{report_files/figure-pdf/fig-states-mean-output-1.pdf}
+
+}
+
+\caption{\label{fig-states-mean}Proporção média de desmatamento dos
+Estados.}
+
+\end{figure}
+
+\begin{figure}[H]
+
+{\centering \includegraphics{report_files/figure-pdf/fig-states-max-output-1.pdf}
+
+}
+
+\caption{\label{fig-states-max}Proporção máxima de desflorestamento dos
+Estados.}
+
+\end{figure}
+
+\begin{figure}[H]
+
+{\centering \includegraphics{report_files/figure-pdf/fig-states-min-output-1.pdf}
+
+}
+
+\caption{\label{fig-states-min}Proporção mínima de desmatamento dos
+Estados.}
+
+\end{figure}
+
+\begin{figure}[H]
+
+{\centering \includegraphics{report_files/figure-pdf/fig-city-output-1.pdf}
+
+}
+
+\caption{\label{fig-city}Cidades com maiores desflorestamento na
+Amazônia legal.}
+
+\end{figure}
+
+\section{Ajuste Inicial}
+
+A construção e avaliação numérica dos Estimadores de Máxima
+Verossimilhança (EMV) foi realizado via implementação da
+log-verossimilhança negativa, assim a otimização computacional com a
+função \texttt{minimize} e o método Nelder-Mead, ambos da biblioteca
+\texttt{scipy} e assim, como toda a construção do presente trabalho foi
+desenvolvida em python.
+
+Assim utilizamos como chute inicial \(\alpha = 0.5\) e \(\beta = 1\), e
+como é possível observar nos ajustes de densidade das Figuras
+Figura~\ref{fig-kde} e Figura~\ref{fig-theoric-density}, foi obtido um
+ajuste razoável, se ajustando de maneira coerente ao histrograma,
+ficando os EMVs \(\widehat{\alpha}\) =
+\texttt{python\ criterios{[}\textquotesingle{}alpha\textquotesingle{}{]}}
+e \(\widehat{\beta}\) =
+\texttt{python\ criterios{[}\textquotesingle{}beta\textquotesingle{}{]}}.
+
+\begin{figure}[H]
+
+{\centering \includegraphics{report_files/figure-pdf/fig-kde-output-1.pdf}
+
+}
+
+\caption{\label{fig-kde}Densidade ajustada por KDE.}
+
+\end{figure}
+
+\begin{figure}[H]
+
+{\centering \includegraphics{report_files/figure-pdf/fig-theoric-density-output-1.pdf}
+
+}
+
+\caption{\label{fig-theoric-density}Ajuste da densidade teórica.}
 
 \end{figure}
 
@@ -382,18 +469,36 @@ verossimilhanças, tendo assim os parâmetros mais plausíveis para a
 geração da amostra. No entanto, nota-se que todos os critérios contam
 outros elementos para a sua construção.
 
-\begin{tabular}{lrrrl}
-\toprule
-{} &  Kumaraswamy &        Beta &         Normal &     Vencedor \\
-\midrule
-AIC  &  -440.933936 & -443.086140 & -154637.091792 &       Normal \\
-BIC  &  -440.918084 & -433.819504 & -154627.825155 &       Normal \\
-CAIC &  -431.667299 & -443.070288 & -154637.075940 &       Normal \\
-AD   &    18.106283 &    9.736648 &     767.892814 &         Beta \\
-CVM  &     9.691977 &    1.251566 &      64.378061 &         Beta \\
-KS   &     0.088746 &    0.089166 &       0.537076 &  Kumaraswamy \\
-\bottomrule
-\end{tabular}
+\hypertarget{tbl-planet-measures}{}
+\begin{longtable}[]{@{}lrrrl@{}}
+\caption{\label{tbl-planet-measures}Métricas para comparação da
+Distribuição Kumaraswamy em contraste à Distribuição Normal e
+Beta}\tabularnewline
+\toprule()
+& Kumaraswamy & Beta & Normal & Vencedor \\
+\midrule()
+\endfirsthead
+\toprule()
+& Kumaraswamy & Beta & Normal & Vencedor \\
+\midrule()
+\endhead
+AIC & -440.934 & -443.086 & -154637 & Normal \\
+BIC & -440.918 & -433.82 & -154628 & Normal \\
+CAIC & -431.667 & -443.07 & -154637 & Normal \\
+AD & 18.1063 & 9.73665 & 767.893 & Beta \\
+CVM & 9.69198 & 1.25157 & 64.3781 & Beta \\
+KS & 0.0887461 & 0.0891663 & 0.537076 & Kumaraswamy \\
+\bottomrule()
+\end{longtable}
+
+É intrigante o exposto pela Tabela Tabela~\ref{tbl-planet-measures},
+onde podemos perceber que todas as distribuições ganham em alguma
+métrica, a Distribuição Normal se notabiliza por ter ganhado em todas as
+métricas que levam em consideração a verossimilhança diretamente.
+Enquanto as Distribuições Unitárias evidenciaram-se em métricas mais
+adequadas para Distribuições não encaixadas, assim é possível dizer que
+a Kumaraswamy é uma possível competidora para a Distribuição Beta em
+modelos incondicionais.
 
 \section{\centering Conclusão}
 
