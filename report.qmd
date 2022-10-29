@@ -43,7 +43,7 @@ Atualmente muitos fenômenos podem ser descritos como variáveis aleatórias (va
 definidas no intervalo unitário (0,1) ^[Onde parenteses indica limites  do intervalo abertos.], 
 assim é natural que pesquisadores desenvolvam distribuições de probabilidade que abarcam esse 
 tipo de va. Uma dessas distribuições é a Kumaraswamy, que foi introduzida em @kuma como uma 
-alternativa ao modelo beta para aplicações na ́area de hidrologia. Em virtude deste fato, grande 
+alternativa ao modelo beta para aplicações na área de hidrologia. Em virtude deste fato, grande 
 parte dos trabalhos empíricos desta distribuição concentra-se nessa área @nadarajah2008distribution. 
 O presente trabalho visa contribuir na expansão e utilização da Kumaraswamy, empregando modelos 
 incondicionais para a taxa de desfloresmento em diversos munícipios da Amazônia legal, 
@@ -92,7 +92,7 @@ L(\alpha, \beta; x) = \prod_{i=1}^{n}f(x;\alpha, \beta) = \alpha^n \beta^n \prod
 
 
 Para verificar as possibilidades de utilizações da Kumaraswamy em contextos
-práticos é necessário conhecimento de sua densidade, assim nas Figuras @fig-density1
+práticos é necessário conhecimento de sua densidade, assim nas @fig-density1
 e @fig-density2. As figuras referem-se a Estimativa da Densidade Kernel ou 
 *Kernel Density Estimation* (KDE), método não-paramétrico para estimação da 
 função densidade com suavização e a Densidade Teórica, utilizando a implementação 
@@ -143,7 +143,7 @@ sns.lineplot(x = np.arange(0.01, 0.99, 0.01), y = Kuma(1, 2).pdf(np.arange(0.01,
 plt.legend(title="Parâmetros", loc="upper right");
 ```
 
-A Figura @fig-cumulative demonstra a curva da função acumulada para os casos supracitados.
+A @fig-cumulative demonstra a curva da função acumulada para os casos supracitados.
 
 
 ```{python}
@@ -210,10 +210,24 @@ ocorrência restritas a partes que já foram reduzida a pequenos fragmentos.
 
 \section{\centering Apresentação dos dados}
 
+
+
 ```{python}
 df = pd.read_csv("data/desmatamento.prop.csv").drop(["Unnamed: 0"], axis=1)
 df.rename(columns={"desmatamento_pro": "prop"}, inplace=True)
 ```
+
+Nesta seção são apresentados as analises descritivas para as variáveis em estudo, por meio de tabelas e gráficos de barras.
+Na @tbl-descritiva é possível visualizar a analise descritiva para a variável proporção de desmatamento (prop), contendo 760 observações. A média de desmatamento na região em estudo foi de 37.51% aproximadamente, com desvio padrão de 33.76% aproximadamente. Podemos notar que neste banco de dados acabou ocorrendo valores mínimos de 0 e máximo superior a 1. Como a Distribuição Kumaraswamy suporta valores no intervalo aberto (0,1), adaptamos os dados para estarem dentro deste intervalo, valores iguais a 0 foram substituidos por 0.001, e valores iguais ou maiores que 1 foram substituidos por 0.999, assim mantendo a estrutura da distribuição.
+
+```{python}
+#| label: tbl-descritiva
+#| tbl-cap: Analise descritiva para a proporção de desmatamento.
+from IPython.display import display, Markdown 
+display(Markdown(df[['prop']].describe().to_markdown()))
+```
+
+Os estados da Amazônia Legal com maiores desmatamentos médios foram, principalmente, em Rondônia com 0.6% , Maranhão com 0.57% e PA com 0.48%. Na qual o estado de Rondônia apresenta 52 municípios, ocupando a 6º posição de quantidade de municípios. Maranhão apresenta a maior quantidade de municípios dentre os outros estados da Amazônia Legal, com 170 municípios. Podemos observar pelas @fig-num-city e @fig-states-mean.
 
 ```{python}
 #| fig-cap: "Número de municípios em cada estado da Amazônia Legal."
@@ -232,6 +246,8 @@ ax.bar_label(ax.containers[0]);
 #| fig-pos: H
 bar_ploto(df, x = 'Estado', y = 'prop')
 ```
+
+O estado de Maranhão detém o maior número de proporção de desmatamento dentre os estados da Amazônia Legal, contendo municípios com proporção máxima de desmatamento (100%), sendo as cidades de Lago dos Rodrigues, São Roberto, Igarepé Grande, Bom Lugar, Lago do Junco, Paulo Ramos, Altamira do Maranhão, Olho d'Áqua das Cunhãs, Brejo de Areia, Lago da Pedra, Presidente Médici. Estes dados podemos vesualizar pelas @fig-states-max e @fig-city. As taxas mínimas de desmatamento, vistas pela @fig-states-min, se aproximaram em praticamente todas as regiões. A região de Rondônia obteve a maior taxa dentre as proporções mínimas de desmatamento, com 0.06, relativamente muito próximo de 0, como visto em outros estados.
 
 ```{python}
 #| fig-cap: "Proporção máxima de desflorestamento dos Estados."
@@ -273,7 +289,7 @@ criterios = kuma.metrics(prop)
 ```
 
 Assim utilizamos como chute inicial $\alpha = 0.5$ e $\beta = 1$, e como é
-possível observar nos ajustes de densidade das Figuras @fig-kde e 
+possível observar nos ajustes de densidade das @fig-kde e 
 @fig-theoric-density, foi obtido um ajuste razoável, se ajustando de maneira
 coerente ao histrograma, ficando os EMVs $\widehat{\alpha}$ = 
 `python criterios['alpha']` e $\widehat{\beta}$ = 
@@ -357,7 +373,7 @@ display(Markdown(pd.DataFrame({'Kumaraswamy' : criterios_kuma, 'Beta' : criterio
 
 </center>
 
-É intrigante o exposto pela Tabela @tbl-planet-measures, onde podemos
+É intrigante o exposto pela @tbl-planet-measures, onde podemos
 perceber que todas as distribuições ganham em alguma métrica, a Distribuição
 Normal se notabiliza por ter ganhado em todas as métricas que levam em 
 consideração a verossimilhança diretamente. Enquanto as Distribuições
