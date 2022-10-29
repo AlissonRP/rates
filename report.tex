@@ -191,7 +191,7 @@ estimadores de máxima verossimilhança para verificar a qualidade do
 modelo realizamos comparações com a Distribuição Beta e a Distribuição
 Normal.
 \end{abstract}
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[interior hidden, frame hidden, boxrule=0pt, sharp corners, breakable, borderline west={3pt}{0pt}{shadecolor}, enhanced]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[sharp corners, interior hidden, enhanced, frame hidden, boxrule=0pt, borderline west={3pt}{0pt}{shadecolor}, breakable]}{\end{tcolorbox}}\fi
 
 \section{\centering Introdução}
 
@@ -356,22 +356,22 @@ reduzida a pequenos fragmentos.
 
 \section{\centering Apresentação dos dados}
 
-Nesta seção são apresentados as analises descritivas para as variáveis
+Nesta seção são apresentados as análises descritivas para as variáveis
 em estudo, por meio de tabelas e gráficos de barras. Na
 Tabela~\ref{tbl-descritiva} é possível visualizar a analise descritiva
 para a variável proporção de desmatamento (prop), contendo 760
 observações. A média de desmatamento na região em estudo foi de 37.51\%
 aproximadamente, com desvio padrão de 33.76\% aproximadamente. Podemos
-notar que neste banco de dados acabou ocorrendo valores mínimos de 0 e
-máximo superior a 1. Como a Distribuição Kumaraswamy suporta valores no
-intervalo aberto (0,1), adaptamos os dados para estarem dentro deste
+notar, que neste banco de dados acabou ocorrendo valores mínimos de 0 e
+máximo superiores a 1. Como a Distribuição Kumaraswamy suporta valores
+no intervalo aberto (0,1), adaptamos os dados para estarem dentro deste
 intervalo, valores iguais a 0 foram substituidos por 0.001, e valores
 iguais ou maiores que 1 foram substituidos por 0.999, assim mantendo a
 estrutura da distribuição.
 
 \hypertarget{tbl-descritiva}{}
 \begin{longtable}[]{@{}lr@{}}
-\caption{\label{tbl-descritiva}Analise descritiva para a proporção de
+\caption{\label{tbl-descritiva}Análise descritiva para a proporção de
 desmatamento.}\tabularnewline
 \toprule()
 & prop \\
@@ -393,11 +393,11 @@ max & 1.00408 \\
 \end{longtable}
 
 Os estados da Amazônia Legal com maiores desmatamentos médios foram,
-principalmente, em Rondônia com 0.6\% , Maranhão com 0.57\% e PA com
+principalmente, em Rondônia com 0.60\% , Maranhão com 0.57\% e PA com
 0.48\%. Na qual o estado de Rondônia apresenta 52 municípios, ocupando a
-6º posição de quantidade de municípios. Maranhão apresenta a maior
+6ª posição de quantidade de municípios. Maranhão apresenta a maior
 quantidade de municípios dentre os outros estados da Amazônia Legal, com
-170 municípios. Podemos observar pelas Figura~\ref{fig-num-city} e
+170 municípios. Podendo ser observado pelas Figura~\ref{fig-num-city} e
 Figura~\ref{fig-states-mean}.
 
 \begin{figure}[H]
@@ -423,16 +423,16 @@ Estados.}
 \end{figure}
 
 O estado de Maranhão detém o maior número de proporção de desmatamento
-dentre os estados da Amazônia Legal, contendo municípios com proporção
+dentre os estados da Amazônia Legal, contendo municípios com proporções
 máxima de desmatamento (100\%), sendo as cidades de Lago dos Rodrigues,
 São Roberto, Igarepé Grande, Bom Lugar, Lago do Junco, Paulo Ramos,
 Altamira do Maranhão, Olho d'Áqua das Cunhãs, Brejo de Areia, Lago da
-Pedra, Presidente Médici. Estes dados podemos vesualizar pelas
+Pedra, Presidente Médici. Estes dados podemos visualizar pelas
 Figura~\ref{fig-states-max} e Figura~\ref{fig-city}. As taxas mínimas de
 desmatamento, vistas pela Figura~\ref{fig-states-min}, se aproximaram em
 praticamente todas as regiões. A região de Rondônia obteve a maior taxa
-dentre as proporções mínimas de desmatamento, com 0.06, relativamente
-muito próximo de 0, como visto em outros estados.
+dentre as proporções mínimas de desmatamento, com 0.06\%, relativamente
+muito próximo de 0\%, como visto em outros estados.
 
 \begin{figure}[H]
 
@@ -557,6 +557,24 @@ uma possível competidora para a Distribuição Beta em modelos
 incondicionais.
 
 \section{\centering Conclusão}
+
+Neste trabalho analisamos em especial a Distribuição Kumaraswamy, junto
+com o banco de dados para a taxa de desfloresmento em diversos
+munícipios da Amazônia Legal. De tal forma a ser comparada com outras
+duas distribuições, a Distribuição Beta e a Distribuição Normal.
+
+A Distribuição Kumaraswamy é uma grande concorrente da Distribuição
+Beta, e por conta de possuir cdf de forma fechada, ao contrário da
+distribuição Beta, tem uma maior relevância na utilização em questões de
+simulação.
+
+Desta forma, conseguimos perceber que a Distribuição Kumaraswamy
+demostrou-se realmente uma grande concorrente da Distribuição Beta.
+Porém, a Distribuição Beta ainda conseguiu se sair melhor, ganhando em
+praticamente todas as métricas, quando as duas comparadas separadamente
+(descartando a Normal), apenas no teste de KS a Distribuição Kumaraswamy
+se saiu melhor. Portanto, a distribuição que melhor representou os dados
+de desflorestamento da Amazônia Legal foi a Distribuição Beta.
 
 \section{\centering Referências}
 

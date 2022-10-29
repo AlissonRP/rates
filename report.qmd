@@ -217,17 +217,17 @@ df = pd.read_csv("data/desmatamento.prop.csv").drop(["Unnamed: 0"], axis=1)
 df.rename(columns={"desmatamento_pro": "prop"}, inplace=True)
 ```
 
-Nesta seção são apresentados as analises descritivas para as variáveis em estudo, por meio de tabelas e gráficos de barras.
-Na @tbl-descritiva é possível visualizar a analise descritiva para a variável proporção de desmatamento (prop), contendo 760 observações. A média de desmatamento na região em estudo foi de 37.51% aproximadamente, com desvio padrão de 33.76% aproximadamente. Podemos notar que neste banco de dados acabou ocorrendo valores mínimos de 0 e máximo superior a 1. Como a Distribuição Kumaraswamy suporta valores no intervalo aberto (0,1), adaptamos os dados para estarem dentro deste intervalo, valores iguais a 0 foram substituidos por 0.001, e valores iguais ou maiores que 1 foram substituidos por 0.999, assim mantendo a estrutura da distribuição.
+Nesta seção são apresentados as análises descritivas para as variáveis em estudo, por meio de tabelas e gráficos de barras.
+Na @tbl-descritiva é possível visualizar a analise descritiva para a variável proporção de desmatamento (prop), contendo 760 observações. A média de desmatamento na região em estudo foi de 37.51% aproximadamente, com desvio padrão de 33.76% aproximadamente. Podemos notar, que neste banco de dados acabou ocorrendo valores mínimos de 0 e máximo superiores a 1. Como a Distribuição Kumaraswamy suporta valores no intervalo aberto (0,1), adaptamos os dados para estarem dentro deste intervalo, valores iguais a 0 foram substituidos por 0.001, e valores iguais ou maiores que 1 foram substituidos por 0.999, assim mantendo a estrutura da distribuição.
 
 ```{python}
 #| label: tbl-descritiva
-#| tbl-cap: Analise descritiva para a proporção de desmatamento.
+#| tbl-cap: Análise descritiva para a proporção de desmatamento.
 from IPython.display import display, Markdown 
 display(Markdown(df[['prop']].describe().to_markdown()))
 ```
 
-Os estados da Amazônia Legal com maiores desmatamentos médios foram, principalmente, em Rondônia com 0.6% , Maranhão com 0.57% e PA com 0.48%. Na qual o estado de Rondônia apresenta 52 municípios, ocupando a 6º posição de quantidade de municípios. Maranhão apresenta a maior quantidade de municípios dentre os outros estados da Amazônia Legal, com 170 municípios. Podemos observar pelas @fig-num-city e @fig-states-mean.
+Os estados da Amazônia Legal com maiores desmatamentos médios foram, principalmente, em Rondônia com 0.60% , Maranhão com 0.57% e PA com 0.48%. Na qual o estado de Rondônia apresenta 52 municípios, ocupando a 6ª posição de quantidade de municípios. Maranhão apresenta a maior quantidade de municípios dentre os outros estados da Amazônia Legal, com 170 municípios. Podendo ser observado pelas @fig-num-city e @fig-states-mean.
 
 ```{python}
 #| fig-cap: "Número de municípios em cada estado da Amazônia Legal."
@@ -247,7 +247,7 @@ ax.bar_label(ax.containers[0]);
 bar_ploto(df, x = 'Estado', y = 'prop')
 ```
 
-O estado de Maranhão detém o maior número de proporção de desmatamento dentre os estados da Amazônia Legal, contendo municípios com proporção máxima de desmatamento (100%), sendo as cidades de Lago dos Rodrigues, São Roberto, Igarepé Grande, Bom Lugar, Lago do Junco, Paulo Ramos, Altamira do Maranhão, Olho d'Áqua das Cunhãs, Brejo de Areia, Lago da Pedra, Presidente Médici. Estes dados podemos vesualizar pelas @fig-states-max e @fig-city. As taxas mínimas de desmatamento, vistas pela @fig-states-min, se aproximaram em praticamente todas as regiões. A região de Rondônia obteve a maior taxa dentre as proporções mínimas de desmatamento, com 0.06, relativamente muito próximo de 0, como visto em outros estados.
+O estado de Maranhão detém o maior número de proporção de desmatamento dentre os estados da Amazônia Legal, contendo municípios com proporções máxima de desmatamento (100%), sendo as cidades de Lago dos Rodrigues, São Roberto, Igarepé Grande, Bom Lugar, Lago do Junco, Paulo Ramos, Altamira do Maranhão, Olho d'Áqua das Cunhãs, Brejo de Areia, Lago da Pedra, Presidente Médici. Estes dados podemos visualizar pelas @fig-states-max e @fig-city. As taxas mínimas de desmatamento, vistas pela @fig-states-min, se aproximaram em praticamente todas as regiões. A região de Rondônia obteve a maior taxa dentre as proporções mínimas de desmatamento, com 0.06%, relativamente muito próximo de 0%, como visto em outros estados.
 
 ```{python}
 #| fig-cap: "Proporção máxima de desflorestamento dos Estados."
@@ -383,5 +383,10 @@ competidora para a Distribuição Beta em modelos incondicionais.
 
 \section{\centering Conclusão}
 
+Neste trabalho analisamos em especial a Distribuição Kumaraswamy, junto com o banco de dados para a taxa de desfloresmento em diversos munícipios da Amazônia Legal. De tal forma a ser comparada com outras duas distribuições, a Distribuição Beta e a Distribuição Normal. 
+
+A Distribuição Kumaraswamy é uma grande concorrente da Distribuição Beta, e por conta de possuir cdf de forma fechada, ao contrário da distribuição Beta, tem uma maior relevância na utilização em questões de simulação. 
+
+Desta forma, conseguimos perceber que a Distribuição Kumaraswamy demostrou-se realmente uma grande concorrente da Distribuição Beta. Porém, a Distribuição Beta ainda conseguiu se sair melhor, ganhando em praticamente todas as métricas, quando as duas comparadas separadamente (descartando a Normal), apenas no teste de KS a Distribuição Kumaraswamy se saiu melhor. Portanto, a distribuição que melhor representou os dados de desflorestamento da Amazônia Legal foi a Distribuição Beta.
 
 \section{\centering Referências} 
