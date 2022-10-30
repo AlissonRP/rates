@@ -1,0 +1,392 @@
+---
+title: "Distribuição Kumaraswamy"
+subtitle: E suas Aplicações
+author: "Alisson Rosa <br> João Inácio <br> Vítor Pereira"
+institute: "Universidade Federal de Santa Maria"
+abstract: "Muitas vezes estamos interessados em modelar variáveis que estão definidas entre zero e um,
+como sabemos aonde nossa variável esta definida mas não sabemos qual dos valores será observado,
+temos portanto uma incerteza probabilística, que pode e deve ser modelada por medidas de
+ probabilidade. Aqui portanto, introduziremos a distribuição Kumaraswamy para o ajuste dos dados de 
+ desflorestamento, que é uma das muitas possibilidades para modelagem desse tipo de variável,
+ encontraremos estimativas para os parâmetros da distribuição usando estimadores de máxima verossimilhança 
+ para verificar a qualidade do modelo realizamos comparações com a Distribuição Beta e a Distribuição Normal."
+format: 
+  pdf:
+    include-in-header: 
+      text: |
+        \usepackage{float}
+    number-sections: true
+    keep-tex: true
+    fig-width: 5.9
+    fig-height: 2.9
+    indent: 2m
+    geometry:
+      - top=20mm
+      - left=18mm
+      - right=18mm
+      - heightrounded
+    documentclass: article
+      
+execute:
+  warning: false
+  echo: false
+lang: pt
+bibliography: docs/bib.bib
+nocite: |
+          @*
+---
+
+
+\section{\centering Introdução}
+
+Atualmente muitos fenômenos podem ser descritos como variáveis aleatórias (va) 
+definidas no intervalo unitário (0,1) ^[Onde parenteses indica limites  do intervalo abertos.], 
+assim é natural que pesquisadores desenvolvam distribuições de probabilidade que abarcam esse 
+tipo de va. Uma dessas distribuições é a Kumaraswamy, que foi introduzida em @kuma como uma 
+alternativa ao modelo beta para aplicações na área de hidrologia. Em virtude deste fato, grande 
+parte dos trabalhos empíricos desta distribuição concentra-se nessa área @nadarajah2008distribution. 
+O presente trabalho visa contribuir na expansão e utilização da Kumaraswamy, empregando modelos 
+incondicionais para a taxa de desfloresmento em diversos munícipios da Amazônia legal, 
+disponilizados [aqui](http://www.dpi.inpe.br/prodesdigital/prodesmunicipal.php) pelo projeto PRODES 
+do INPE. Assim é possível mensurar a qualidade da Kumaraswamy para modelagem dos dados propostos, 
+para isso estamos utilizando 6 métricas frequentistas estabelecidas: AIC, BIC, CAIC, Kolmogorov-Smirnov, 
+Cramer-Von Mises e Anderson-Darling, em contraste com a Distribuição Normal e a Distribuição Beta.
+
+\section{\centering A distribuição Kumaraswamy}
+
+Vamos nessa seção introduzir quantidades básicas da distribuição Kumaraswamy, sendo elas sua função 
+densidade de probabilidade (pdf), função de distribuição acumulada (cdf), função quantilica (qf), 
+função de verossimilhança (ll) e esperança (**E**)
+
+\subsection{Quantidade Básicas}
+
+Seja X uma variável aleatória que segue uma distribuição Kumaraswamy, então sua cdf é dada por:
+
+\begin{align}
+F(x;\alpha, \beta) = 1 - (1 - x^\alpha)^\beta,  \quad 0 < x< 1
+\end{align}
+
+Onde $\alpha, \beta > 0$. Sua pdf então fica definida como:
+
+\begin{align}
+f(x;\alpha, \beta) = \dfrac{dF}{dx} =\alpha\beta x^{\alpha - 1}(1 - x^\alpha)^{\beta  - 1}, \quad 0 < x< 1
+\end{align}
+
+Sua qf, que é  a função inversa da cdf, fica definida como:
+
+\begin{align}
+Q(u;\alpha, \beta) = \bigg(1 - (1 - u)^{1/\beta}\bigg)^{\dfrac{1}{\alpha}}, \quad 0<u<1
+\end{align}
+
+É FÁCIL ver que que a esperança da distribuição Kumaraswamy é dada por  
+
+\begin{align}
+\text{E}(X) = \dfrac{\beta\Gamma\bigg(1 + \dfrac{1}{\alpha}\bigg)\Gamma(\beta)}{\Gamma\bigg(1 + \dfrac{1}{\alpha} + \beta\bigg)}
+\end{align}
+
+A função de verossimilhança é dada por:
+
+\begin{align}
+L(\alpha, \beta; x) = \prod_{i=1}^{n}f(x;\alpha, \beta) = \alpha^n \beta^n \prod_{i=1}^{n}x_i^{\alpha - 1}\prod_{i=1}^{n}(1-x_i^{\alpha})^{\beta-1}
+\end{align}
+
+
+Para verificar as possibilidades de utilizações da Kumaraswamy em contextos
+práticos é necessário conhecimento de sua densidade, assim nas @fig-density1
+e @fig-density2. As figuras referem-se a Estimativa da Densidade Kernel ou 
+*Kernel Density Estimation* (KDE), método não-paramétrico para estimação da 
+função densidade com suavização e a Densidade Teórica, utilizando a implementação 
+da função densidade de probabilidade desenvolvida na classe `Kuma` do python dos 
+próprios autores. Podemos observar a flexibilidade da Densidade da Kumaraswamy em 
+3 casos distintos:
+* Caso 1: $\alpha = 0.5$ e $\beta = 0.5$;
+* Caso 2: $\alpha = 2$ e $\beta = 5$;
+* Caso 3: $\alpha = 1$ e $\beta = 2$.
+
+```{python}
+from model.Kuma import Kuma
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+from model.utils import bar_ploto, AD_beta, AD_norm, AIC, BIC, CAIC, llnorm, betaNLL
+import pandas as pd
+from scipy import stats
+from scipy.optimize import minimize
+
+```
+```{python}
+#| fig-cap: "Função densidade por KDE da Kumaraswamy para alguns valores de parâmetros"
+#| label: fig-density1
+#| fig-pos: H
+
+prm={"figure.figsize":(8, 4),
+'figure.dpi':150}
+plt.rcParams.update(prm)
+plt.rc('legend', fontsize=10)
+
+def plot_density(alpha, beta):
+  pass
+x = np.random.uniform(0, 1, 5000)
+sns.kdeplot(Kuma(0.5, 0.5).quantile(x))
+sns.kdeplot(Kuma(2, 5).quantile(x))
+sns.kdeplot(Kuma(1, 2).quantile(x))
+plt.legend(title="Parâmetros", loc="upper right", labels=["$\\alpha = 0.5, \\beta = 0.5$","$\\alpha = 2, \\beta = 5$", "$\\alpha = 1, \\beta = 2$"]);
+```
+
+```{python}
+#| fig-cap: "Função densidade da Kumaraswamy para alguns valores de parâmetros"
+#| label: fig-density2
+#| fig-pos: H
+sns.lineplot(x = np.arange(0.01, 0.99, 0.01), y = Kuma(0.5, 0.5).pdf(np.arange(0.01, 0.99, 0.01)), label = "$\\alpha = 0.5, \\beta = 0.5$")
+sns.lineplot(x = np.arange(0.01, 0.99, 0.01), y = Kuma(2, 5).pdf(np.arange(0.01, 0.99, 0.01)), label = "$\\alpha = 2, \\beta = 5$")
+sns.lineplot(x = np.arange(0.01, 0.99, 0.01), y = Kuma(1, 2).pdf(np.arange(0.01, 0.99, 0.01)), label = "$\\alpha = 1, \\beta = 2$")
+plt.legend(title="Parâmetros", loc="upper right");
+```
+
+A @fig-cumulative demonstra a curva da função acumulada para os casos supracitados.
+
+
+```{python}
+#| fig-cap: "Função acumulada da Kumaraswamy para alguns valores de parâmetros"
+#| label: fig-cumulative
+#| fig-pos: H
+sns.lineplot(x = np.arange(0.01, 0.99, 0.01), y = Kuma(0.5, 0.5).cumulative(np.arange(0.01, 0.99, 0.01)), label = "$\\alpha = 0.5, \\beta = 0.5$")
+sns.lineplot(x = np.arange(0.01, 0.99, 0.01), y = Kuma(2, 5).cumulative(np.arange(0.01, 0.99, 0.01)), label = "$\\alpha = 2, \\beta = 5$")
+sns.lineplot(x = np.arange(0.01, 0.99, 0.01), y = Kuma(1, 2).cumulative(np.arange(0.01, 0.99, 0.01)), label = "$\\alpha = 1, \\beta = 2$")
+plt.legend(title="Parâmetros", loc="upper right");
+```
+
+
+\subsection{Justificativa}
+
+O artigo de @kuma propõe e demonstra aplicações da distribuição
+Kumaraswamy para variáveis aleatórias e processos aleatórios 
+derivados de processos hidrológicos. O artigo foi publicado na 
+*Journal of Hydrology*, assim é perceptível que a distribuição 
+foi concebida para se adequar a dados hidrológicos. Temos como 
+casos de suas utilizações em precipitação diária, fluxo diário, 
+reservatórios de água e análise das ondas do oceano, entre outras.
+
+Para @nadarajah2008distribution a utilização da Kumaraswamy 
+para o campo da hidrologia, é consolidada. Sendo perceptível 
+pelas inúmeras aplicações em diversos artigos como: @sundar, 
+@fletcher e @koutsoyiannis, além de se sobressair em relação 
+a distribuição beta, a distribuição padrão para dados no (0,1), 
+de acordo com @koutsoyiannis. Em @dey2018kumaraswamy a Kumaraswamy 
+é utilizada para a quantidade de deslocamento de líquido metálico 
+em duas máquinas diferentes, sendo superior as Distribuições 
+Gumbel e Fréchet.
+
+É notório também a dissiminação recente do estudo da Kumaraswamy, 
+em expansão para distribuições mais complexas, como em @lemonte2013exponentiated, 
+@mazucheli2020unit, @cribari2019inflated e @sagrillo2021modified 
+ou em suas aplicações em regressão e séries temporais, visto em 
+@pumi2020kumaraswamy, @mitnik2013kumaraswamy, @bayer2021inflated e @bayer2017kumaraswamy.
+
+Assim é factível a falta de ajustes da Distribuição Kumaraswamy 
+em outras áreas de estudo, visto que a distribuição tem dissiminação
+acadêmica exponencial recentemente, com admiráveis contribuições da 
+UFSM, em artigos supracitados. Decidimos contribuir para um maior 
+estudo da distribuição em outra área ambiental, o desmatamento, 
+pensando especificamente na Amazônia brasileira.
+
+O estudo e modelos com bons ajustes de desmatamento e desflorestamento, 
+impactam a vida no mundo todo, tanto humana quanto não humana. Bons 
+modelos conseguem prever e informar quais variáveis mais impactam nos 
+desmatamento, possibilitando verificar sua evolução conforme o tempo. 
+Sendo útil para construção de políticas públicas, visando tomadas de 
+decisão mais  eficientes.
+
+O desflorestamento é questão com importância ambiental, social, econômica 
+e até política, pois a floresta amazônica tem seu papel no armazenamento 
+de carbono, evitando o aquecimento global, na reciclagem de água e na 
+manutenção da biodiversidade. Além de fornecerem uma grande variedade de 
+produtos materiais e de sustento para as populações locais. Mesmo com áreas 
+com grandes partes preservadas, há impacto na biodiversidade, pois a 
+distribuição das espécies não é uniforme. Muitas espécies têm áreas de 
+ocorrência restritas a partes que já foram reduzida a pequenos fragmentos.
+
+
+
+\section{\centering Apresentação dos dados}
+
+
+
+```{python}
+df = pd.read_csv("data/desmatamento.prop.csv").drop(["Unnamed: 0"], axis=1)
+df.rename(columns={"desmatamento_pro": "prop"}, inplace=True)
+```
+
+Nesta seção são apresentados as análises descritivas para as variáveis em estudo, por meio de tabelas e gráficos de barras.
+Na @tbl-descritiva é possível visualizar a analise descritiva para a variável proporção de desmatamento (prop), contendo 760 observações. A média de desmatamento na região em estudo foi de 37.51% aproximadamente, com desvio padrão de 33.76% aproximadamente. Podemos notar, que neste banco de dados acabou ocorrendo valores mínimos de 0 e máximo superiores a 1. Como a Distribuição Kumaraswamy suporta valores no intervalo aberto (0,1), adaptamos os dados para estarem dentro deste intervalo, valores iguais a 0 foram substituidos por 0.001, e valores iguais ou maiores que 1 foram substituidos por 0.999, assim mantendo a estrutura da distribuição.
+
+```{python}
+#| label: tbl-descritiva
+#| tbl-cap: Análise descritiva para a proporção de desmatamento.
+from IPython.display import display, Markdown 
+display(Markdown(df[['prop']].describe().to_markdown()))
+```
+
+Os estados da Amazônia Legal com maiores desmatamentos médios foram, principalmente, em Rondônia com 0.60% , Maranhão com 0.57% e PA com 0.48%. Na qual o estado de Rondônia apresenta 52 municípios, ocupando a 6ª posição de quantidade de municípios. Maranhão apresenta a maior quantidade de municípios dentre os outros estados da Amazônia Legal, com 170 municípios. Podendo ser observado pelas @fig-num-city e @fig-states-mean.
+
+```{python}
+#| fig-cap: "Número de municípios em cada estado da Amazônia Legal."
+#| label: fig-num-city
+#| fig-pos: H
+ax = sns.countplot(df, x='Estado', 
+                    order = df['Estado'].value_counts().index)
+ax.set(ylabel = 'Número de municípios')
+ax.bar_label(ax.containers[0]);
+
+```
+
+```{python}
+#| fig-cap: "Proporção média de desmatamento dos Estados."
+#| label: fig-states-mean
+#| fig-pos: H
+bar_ploto(df, x = 'Estado', y = 'prop')
+```
+
+O estado de Maranhão detém o maior número de proporção de desmatamento dentre os estados da Amazônia Legal, contendo municípios com proporções máxima de desmatamento (100%), sendo as cidades de Lago dos Rodrigues, São Roberto, Igarepé Grande, Bom Lugar, Lago do Junco, Paulo Ramos, Altamira do Maranhão, Olho d'Áqua das Cunhãs, Brejo de Areia, Lago da Pedra, Presidente Médici. Estes dados podemos visualizar pelas @fig-states-max e @fig-city. As taxas mínimas de desmatamento, vistas pela @fig-states-min, se aproximaram em praticamente todas as regiões. A região de Rondônia obteve a maior taxa dentre as proporções mínimas de desmatamento, com 0.06%, relativamente muito próximo de 0%, como visto em outros estados.
+
+```{python}
+#| fig-cap: "Proporção máxima de desflorestamento dos Estados."
+#| label: fig-states-max
+#| fig-pos: H
+bar_ploto(df, x = 'Estado', y = 'prop', metric = 'max')
+```
+
+
+```{python}
+#| fig-cap: "Proporção mínima de desmatamento dos Estados."
+#| label: fig-states-min
+#| fig-pos: H
+bar_ploto(df, x = 'Estado', y = 'prop', metric = 'min')
+```
+
+```{python}
+#| fig-cap: "Cidades com maiores desflorestamento na Amazônia legal."
+#| label: fig-city
+#| fig-pos: H
+bar_ploto(df.sort_values('prop', ascending = False).head(15), x = 'prop', y = 'Municipio', variable = 'Municipio', metric = 'mean', hue = 'Estado', legend = 'upper left')
+```
+
+\section{Ajuste Inicial}
+
+A construção e avaliação numérica dos Estimadores de Máxima Verossimilhança 
+(EMV) foi realizado via implementação da log-verossimilhança negativa, assim a 
+otimização computacional com a função `minimize` e o método Nelder-Mead, ambos 
+da biblioteca `scipy` e assim, como toda a construção do presente trabalho foi 
+desenvolvida em python. 
+
+```{python}
+kuma = Kuma(0.5, 0.5)
+df['prop'] = np.where(df['prop'] >= 1, 0.99, df['prop'])
+df['prop'] = np.where(df['prop'] <= 0, 0.01, df['prop'])
+prop = df['prop']
+kuma.fit(theta = [0.5, 1], data = prop,  change=True)
+criterios = kuma.metrics(prop)
+```
+
+Assim utilizamos como chute inicial $\alpha = 0.5$ e $\beta = 1$, e como é
+possível observar nos ajustes de densidade das @fig-kde e 
+@fig-theoric-density, foi obtido um ajuste razoável, se ajustando de maneira
+coerente ao histrograma, ficando os EMVs $\widehat{\alpha}$ = 
+`python criterios['alpha']` e $\widehat{\beta}$ = 
+`python criterios['beta']`.
+
+
+```{python}
+#| fig-cap: "Densidade ajustada por KDE."
+#| label: fig-kde
+#| fig-pos: H
+kuma.plot(prop)
+```
+
+
+```{python}
+#| fig-cap: "Ajuste da densidade teórica."
+#| label: fig-theoric-density
+#| fig-pos: H
+
+kuma.plot_density(prop)
+```
+
+
+
+
+\subsection{Medidas Básicas}
+
+
+\section{\centering Ajuste do Modelo}
+Para a verificação da adequação da distribuição Kumaraswamy para 
+modelagem de dados de desmatamento iremos realizar a comparação com 
+duas distribuições amplamente utilizadas: Distribuição Normal e a 
+Distribuição beta, a distribuição mais utilizada para variáveis 
+aleatórias com suporte no (0,1). 
+
+A comparação foi construída utilizando 6 métricas: AIC, BIC, CAIC, 
+Kolmogorov-Smirnov,  Cramer-Von Mises e Anderson-Darling, que se 
+baseiam principalmente na verossimilhança. A verossimilhança a 
+considera os parâmetros variáveis, assim a função de verossimilhança 
+indica os parâmetros mais plausíveis de terem gerado a amostra. Logo, 
+podemos verificar entre todas as  distribuições quais possuem as maiores 
+verossimilhanças, tendo assim os parâmetros mais plausíveis para a 
+geração da amostra. No entanto, nota-se que todos os critérios contam 
+outros elementos para a sua construção.  
+
+```{python}
+
+criterios_kuma = [criterios['AIC'], criterios['AICc'], criterios['BIC'], criterios['cramer_vonmises'], criterios['AD'], criterios['KS']]
+theta0 = [0.5, 1]
+mle = minimize(llnorm, x0=theta0, method="Nelder-Mead", args=(prop))
+res = stats.cramervonmises(prop, 'norm',  args=(mle.x[0], mle.x[1]))
+res1 = stats.kstest(prop, 'norm',  args=(mle.x[0], mle.x[1]))
+AD_norm(prop, mle.x[0], mle.x[1])
+AIC(mle.fun, len(mle.x))
+BIC(mle.fun, len(mle.x), len(prop))
+CAIC(mle.fun, len(mle.x), len(prop))
+criterios = kuma.metrics(prop)
+criterios_normal = ([AIC(mle.fun, len(mle.x)), BIC(mle.fun, len(mle.x), len(prop)), CAIC(mle.fun, len(mle.x), len(prop)),
+                    AD_norm(prop, mle.x[0], mle.x[1]), res.statistic, res1.statistic])
+
+mle = minimize(betaNLL, x0=theta0, method="Nelder-Mead", args=(prop))
+res = stats.cramervonmises(prop, 'beta',  args=(mle.x[0], mle.x[1]))
+res1 = stats.kstest(prop, 'beta',  args=(mle.x[0], mle.x[1]))
+AD_beta(prop, mle.x[0], mle.x[1])
+AIC(mle.fun, len(mle.x))
+BIC(mle.fun, len(mle.x), len(prop))
+CAIC(mle.fun, len(mle.x), len(prop))
+criterios_beta = ([AIC(mle.fun, len(mle.x)), BIC(mle.fun, len(mle.x), len(prop)), CAIC(mle.fun, len(mle.x), len(prop)),
+                    AD_beta(prop, mle.x[0], mle.x[1]), res.statistic, res1.statistic])
+vencedor = ['Normal', 'Normal', 'Normal', 'Beta', 'Beta', 'Kumaraswamy']
+```
+
+<center>
+
+```{python}
+#| label: tbl-planet-measures
+#| tbl-cap: Métricas para comparação da Distribuição Kumaraswamy em contraste à Distribuição Normal e Beta
+from IPython.display import display, Markdown
+display(Markdown(pd.DataFrame({'Kumaraswamy' : criterios_kuma, 'Beta' : criterios_beta, 'Normal' : criterios_normal, 'Vencedor' : vencedor}, index = ['AIC', 'BIC', 'CAIC', 'AD', 'CVM', 'KS']).to_markdown()))
+```
+
+</center>
+
+É intrigante o exposto pela @tbl-planet-measures, onde podemos
+perceber que todas as distribuições ganham em alguma métrica, a Distribuição
+Normal se notabiliza por ter ganhado em todas as métricas que levam em 
+consideração a verossimilhança diretamente. Enquanto as Distribuições
+Unitárias evidenciaram-se em métricas mais adequadas para Distribuições
+não encaixadas, assim é possível dizer que a Kumaraswamy é uma possível
+competidora para a Distribuição Beta em modelos incondicionais.
+
+\section{\centering Conclusão}
+
+Neste trabalho analisamos em especial a Distribuição Kumaraswamy, junto com o banco de dados para a taxa de desfloresmento em diversos munícipios da Amazônia Legal. De tal forma a ser comparada com outras duas distribuições, a Distribuição Beta e a Distribuição Normal. 
+
+A Distribuição Kumaraswamy é uma grande concorrente da Distribuição Beta, e por conta de possuir cdf de forma fechada, ao contrário da distribuição Beta, tem uma maior relevância na utilização em questões de simulação. 
+
+Desta forma, conseguimos perceber que a Distribuição Kumaraswamy demostrou-se realmente uma grande concorrente da Distribuição Beta. Porém, a Distribuição Beta ainda conseguiu se sair melhor, ganhando em praticamente todas as métricas, quando as duas comparadas separadamente (descartando a Normal), apenas no teste de KS a Distribuição Kumaraswamy se saiu melhor. Portanto, a distribuição que melhor representou os dados de desflorestamento da Amazônia Legal foi a Distribuição Beta.
+
+\section{\centering Referências} 

@@ -1,0 +1,673 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+]{article}
+
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage{xcolor}
+\usepackage[top=20mm,left=18mm,right=18mm,heightrounded]{geometry}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\setcounter{secnumdepth}{5}
+% Make \paragraph and \subparagraph free-standing
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newlength{\cslentryspacingunit} % times entry-spacing
+\setlength{\cslentryspacingunit}{\parskip}
+\newenvironment{CSLReferences}[2] % #1 hanging-ident, #2 entry spacing
+ {% don't indent paragraphs
+  \setlength{\parindent}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+  \let\oldpar\par
+  \def\par{\hangindent=\cslhangindent\oldpar}
+  \fi
+  % set entry spacing
+  \setlength{\parskip}{#2\cslentryspacingunit}
+ }%
+ {}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{#1\hfill\break}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+
+\usepackage{float}
+\makeatletter
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Índice}
+\else
+  \newcommand\contentsname{Índice}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{Lista de Figuras}
+\else
+  \newcommand\listfigurename{Lista de Figuras}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{Lista de Tabelas}
+\else
+  \newcommand\listtablename{Lista de Tabelas}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figura}
+\else
+  \newcommand\figurename{Figura}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Tabela}
+\else
+  \newcommand\tablename{Tabela}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listagem}
+\newcommand*\listoflistings{\listof{codelisting}{Lista de Listagens}}
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+\makeatletter
+\@ifpackageloaded{tcolorbox}{}{\usepackage[many]{tcolorbox}}
+\makeatother
+\makeatletter
+\@ifundefined{shadecolor}{\definecolor{shadecolor}{rgb}{.97, .97, .97}}
+\makeatother
+\makeatletter
+\makeatother
+\ifLuaTeX
+\usepackage[bidi=basic]{babel}
+\else
+\usepackage[bidi=default]{babel}
+\fi
+\babelprovide[main,import]{portuguese}
+% get rid of language-specific shorthands (see #6817):
+\let\LanguageShortHands\languageshorthands
+\def\languageshorthands#1{}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={Distribuição Kumaraswamy},
+  pdfauthor={Alisson Rosa   João Inácio   Vítor Pereira},
+  pdflang={pt},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Distribuição Kumaraswamy}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{E suas Aplicações}
+\author{Alisson Rosa João Inácio Vítor Pereira}
+\date{}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Muitas vezes estamos interessados em modelar variáveis que estão
+definidas entre zero e um, como sabemos aonde nossa variável esta
+definida mas não sabemos qual dos valores será observado, temos portanto
+uma incerteza probabilística, que pode e deve ser modelada por medidas
+de probabilidade. Aqui portanto, introduziremos a distribuição
+Kumaraswamy para o ajuste dos dados de desflorestamento, que é uma das
+muitas possibilidades para modelagem desse tipo de variável,
+encontraremos estimativas para os parâmetros da distribuição usando
+estimadores de máxima verossimilhança para verificar a qualidade do
+modelo realizamos comparações com a Distribuição Beta e a Distribuição
+Normal.
+\end{abstract}
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[sharp corners, interior hidden, enhanced, frame hidden, boxrule=0pt, borderline west={3pt}{0pt}{shadecolor}, breakable]}{\end{tcolorbox}}\fi
+
+\section{\centering Introdução}
+
+Atualmente muitos fenômenos podem ser descritos como variáveis
+aleatórias (va) definidas no intervalo unitário (0,1) \footnote{Onde
+  parenteses indica limites do intervalo abertos.}, assim é natural que
+pesquisadores desenvolvam distribuições de probabilidade que abarcam
+esse tipo de va. Uma dessas distribuições é a Kumaraswamy, que foi
+introduzida em Kumaraswamy (1980) como uma alternativa ao modelo beta
+para aplicações na área de hidrologia. Em virtude deste fato, grande
+parte dos trabalhos empíricos desta distribuição concentra-se nessa área
+Nadarajah (2008). O presente trabalho visa contribuir na expansão e
+utilização da Kumaraswamy, empregando modelos incondicionais para a taxa
+de desfloresmento em diversos munícipios da Amazônia legal,
+disponilizados
+\href{http://www.dpi.inpe.br/prodesdigital/prodesmunicipal.php}{aqui}
+pelo projeto PRODES do INPE. Assim é possível mensurar a qualidade da
+Kumaraswamy para modelagem dos dados propostos, para isso estamos
+utilizando 6 métricas frequentistas estabelecidas: AIC, BIC, CAIC,
+Kolmogorov-Smirnov, Cramer-Von Mises e Anderson-Darling, em contraste
+com a Distribuição Normal e a Distribuição Beta.
+
+\section{\centering A distribuição Kumaraswamy}
+
+Vamos nessa seção introduzir quantidades básicas da distribuição
+Kumaraswamy, sendo elas sua função densidade de probabilidade (pdf),
+função de distribuição acumulada (cdf), função quantilica (qf), função
+de verossimilhança (ll) e esperança (\textbf{E})
+
+\subsection{Quantidade Básicas}
+
+Seja X uma variável aleatória que segue uma distribuição Kumaraswamy,
+então sua cdf é dada por:
+
+\begin{align}
+F(x;\alpha, \beta) = 1 - (1 - x^\alpha)^\beta,  \quad 0 < x< 1
+\end{align}
+
+Onde \(\alpha, \beta > 0\). Sua pdf então fica definida como:
+
+\begin{align}
+f(x;\alpha, \beta) = \dfrac{dF}{dx} =\alpha\beta x^{\alpha - 1}(1 - x^\alpha)^{\beta  - 1}, \quad 0 < x< 1
+\end{align}
+
+Sua qf, que é a função inversa da cdf, fica definida como:
+
+\begin{align}
+Q(u;\alpha, \beta) = \bigg(1 - (1 - u)^{1/\beta}\bigg)^{\dfrac{1}{\alpha}}, \quad 0<u<1
+\end{align}
+
+É FÁCIL ver que que a esperança da distribuição Kumaraswamy é dada por
+
+\begin{align}
+\text{E}(X) = \dfrac{\beta\Gamma\bigg(1 + \dfrac{1}{\alpha}\bigg)\Gamma(\beta)}{\Gamma\bigg(1 + \dfrac{1}{\alpha} + \beta\bigg)}
+\end{align}
+
+A função de verossimilhança é dada por:
+
+\begin{align}
+L(\alpha, \beta; x) = \prod_{i=1}^{n}f(x;\alpha, \beta) = \alpha^n \beta^n \prod_{i=1}^{n}x_i^{\alpha - 1}\prod_{i=1}^{n}(1-x_i^{\alpha})^{\beta-1}
+\end{align}
+
+Para verificar as possibilidades de utilizações da Kumaraswamy em
+contextos práticos é necessário conhecimento de sua densidade, assim nas
+Figura~\ref{fig-density1} e Figura~\ref{fig-density2}. As figuras
+referem-se a Estimativa da Densidade Kernel ou \emph{Kernel Density
+Estimation} (KDE), método não-paramétrico para estimação da função
+densidade com suavização e a Densidade Teórica, utilizando a
+implementação da função densidade de probabilidade desenvolvida na
+classe \texttt{Kuma} do python dos próprios autores. Podemos observar a
+flexibilidade da Densidade da Kumaraswamy em 3 casos distintos: * Caso
+1: \(\alpha = 0.5\) e \(\beta = 0.5\); * Caso 2: \(\alpha = 2\) e
+\(\beta = 5\); * Caso 3: \(\alpha = 1\) e \(\beta = 2\).
+
+\begin{figure}[H]
+
+{\centering \includegraphics{report_files/figure-pdf/fig-density1-output-1.pdf}
+
+}
+
+\caption{\label{fig-density1}Função densidade por KDE da Kumaraswamy
+para alguns valores de parâmetros}
+
+\end{figure}
+
+\begin{figure}[H]
+
+{\centering \includegraphics{report_files/figure-pdf/fig-density2-output-1.pdf}
+
+}
+
+\caption{\label{fig-density2}Função densidade da Kumaraswamy para alguns
+valores de parâmetros}
+
+\end{figure}
+
+A Figura~\ref{fig-cumulative} demonstra a curva da função acumulada para
+os casos supracitados.
+
+\begin{figure}[H]
+
+{\centering \includegraphics{report_files/figure-pdf/fig-cumulative-output-1.pdf}
+
+}
+
+\caption{\label{fig-cumulative}Função acumulada da Kumaraswamy para
+alguns valores de parâmetros}
+
+\end{figure}
+
+\subsection{Justificativa}
+
+O artigo de Kumaraswamy (1980) propõe e demonstra aplicações da
+distribuição Kumaraswamy para variáveis aleatórias e processos
+aleatórios derivados de processos hidrológicos. O artigo foi publicado
+na \emph{Journal of Hydrology}, assim é perceptível que a distribuição
+foi concebida para se adequar a dados hidrológicos. Temos como casos de
+suas utilizações em precipitação diária, fluxo diário, reservatórios de
+água e análise das ondas do oceano, entre outras.
+
+Para Nadarajah (2008) a utilização da Kumaraswamy para o campo da
+hidrologia, é consolidada. Sendo perceptível pelas inúmeras aplicações
+em diversos artigos como: Sundar e Subbiah (1989), Fletcher e
+Ponnambalam (2008) e Koutsoyiannis e Xanthopoulos (1989), além de se
+sobressair em relação a distribuição beta, a distribuição padrão para
+dados no (0,1), de acordo com Koutsoyiannis e Xanthopoulos (1989). Em
+Dey, Mazucheli, e Nadarajah (2018) a Kumaraswamy é utilizada para a
+quantidade de deslocamento de líquido metálico em duas máquinas
+diferentes, sendo superior as Distribuições Gumbel e Fréchet.
+
+É notório também a dissiminação recente do estudo da Kumaraswamy, em
+expansão para distribuições mais complexas, como em Lemonte,
+Barreto-Souza, e Cordeiro (2013), Mazucheli et al. (2020), Cribari-Neto
+e Santos (2019) e Sagrillo, Guerra, e Bayer (2021) ou em suas aplicações
+em regressão e séries temporais, visto em Pumi, Rauber, e Bayer (2020),
+Mitnik e Baek (2013), Fábio M. Bayer, Cribari-Neto, e Santos (2021) e
+Fábio Mariano Bayer, Bayer, e Pumi (2017).
+
+Assim é factível a falta de ajustes da Distribuição Kumaraswamy em
+outras áreas de estudo, visto que a distribuição tem dissiminação
+acadêmica exponencial recentemente, com admiráveis contribuições da
+UFSM, em artigos supracitados. Decidimos contribuir para um maior estudo
+da distribuição em outra área ambiental, o desmatamento, pensando
+especificamente na Amazônia brasileira.
+
+O estudo e modelos com bons ajustes de desmatamento e desflorestamento,
+impactam a vida no mundo todo, tanto humana quanto não humana. Bons
+modelos conseguem prever e informar quais variáveis mais impactam nos
+desmatamento, possibilitando verificar sua evolução conforme o tempo.
+Sendo útil para construção de políticas públicas, visando tomadas de
+decisão mais eficientes.
+
+O desflorestamento é questão com importância ambiental, social,
+econômica e até política, pois a floresta amazônica tem seu papel no
+armazenamento de carbono, evitando o aquecimento global, na reciclagem
+de água e na manutenção da biodiversidade. Além de fornecerem uma grande
+variedade de produtos materiais e de sustento para as populações locais.
+Mesmo com áreas com grandes partes preservadas, há impacto na
+biodiversidade, pois a distribuição das espécies não é uniforme. Muitas
+espécies têm áreas de ocorrência restritas a partes que já foram
+reduzida a pequenos fragmentos.
+
+\section{\centering Apresentação dos dados}
+
+Nesta seção são apresentados as análises descritivas para as variáveis
+em estudo, por meio de tabelas e gráficos de barras. Na
+Tabela~\ref{tbl-descritiva} é possível visualizar a analise descritiva
+para a variável proporção de desmatamento (prop), contendo 760
+observações. A média de desmatamento na região em estudo foi de 37.51\%
+aproximadamente, com desvio padrão de 33.76\% aproximadamente. Podemos
+notar, que neste banco de dados acabou ocorrendo valores mínimos de 0 e
+máximo superiores a 1. Como a Distribuição Kumaraswamy suporta valores
+no intervalo aberto (0,1), adaptamos os dados para estarem dentro deste
+intervalo, valores iguais a 0 foram substituidos por 0.001, e valores
+iguais ou maiores que 1 foram substituidos por 0.999, assim mantendo a
+estrutura da distribuição.
+
+\hypertarget{tbl-descritiva}{}
+\begin{longtable}[]{@{}lr@{}}
+\caption{\label{tbl-descritiva}Análise descritiva para a proporção de
+desmatamento.}\tabularnewline
+\toprule()
+& prop \\
+\midrule()
+\endfirsthead
+\toprule()
+& prop \\
+\midrule()
+\endhead
+count & 760 \\
+mean & 0.375088 \\
+std & 0.337627 \\
+min & 0 \\
+25\% & 0.0268267 \\
+50\% & 0.317664 \\
+75\% & 0.683185 \\
+max & 1.00408 \\
+\bottomrule()
+\end{longtable}
+
+Os estados da Amazônia Legal com maiores desmatamentos médios foram,
+principalmente, em Rondônia com 0.60\% , Maranhão com 0.57\% e PA com
+0.48\%. Na qual o estado de Rondônia apresenta 52 municípios, ocupando a
+6ª posição de quantidade de municípios. Maranhão apresenta a maior
+quantidade de municípios dentre os outros estados da Amazônia Legal, com
+170 municípios. Podendo ser observado pelas Figura~\ref{fig-num-city} e
+Figura~\ref{fig-states-mean}.
+
+\begin{figure}[H]
+
+{\centering \includegraphics{report_files/figure-pdf/fig-num-city-output-1.pdf}
+
+}
+
+\caption{\label{fig-num-city}Número de municípios em cada estado da
+Amazônia Legal.}
+
+\end{figure}
+
+\begin{figure}[H]
+
+{\centering \includegraphics{report_files/figure-pdf/fig-states-mean-output-1.pdf}
+
+}
+
+\caption{\label{fig-states-mean}Proporção média de desmatamento dos
+Estados.}
+
+\end{figure}
+
+O estado de Maranhão detém o maior número de proporção de desmatamento
+dentre os estados da Amazônia Legal, contendo municípios com proporções
+máxima de desmatamento (100\%), sendo as cidades de Lago dos Rodrigues,
+São Roberto, Igarepé Grande, Bom Lugar, Lago do Junco, Paulo Ramos,
+Altamira do Maranhão, Olho d'Áqua das Cunhãs, Brejo de Areia, Lago da
+Pedra, Presidente Médici. Estes dados podemos visualizar pelas
+Figura~\ref{fig-states-max} e Figura~\ref{fig-city}. As taxas mínimas de
+desmatamento, vistas pela Figura~\ref{fig-states-min}, se aproximaram em
+praticamente todas as regiões. A região de Rondônia obteve a maior taxa
+dentre as proporções mínimas de desmatamento, com 0.06\%, relativamente
+muito próximo de 0\%, como visto em outros estados.
+
+\begin{figure}[H]
+
+{\centering \includegraphics{report_files/figure-pdf/fig-states-max-output-1.pdf}
+
+}
+
+\caption{\label{fig-states-max}Proporção máxima de desflorestamento dos
+Estados.}
+
+\end{figure}
+
+\begin{figure}[H]
+
+{\centering \includegraphics{report_files/figure-pdf/fig-states-min-output-1.pdf}
+
+}
+
+\caption{\label{fig-states-min}Proporção mínima de desmatamento dos
+Estados.}
+
+\end{figure}
+
+\begin{figure}[H]
+
+{\centering \includegraphics{report_files/figure-pdf/fig-city-output-1.pdf}
+
+}
+
+\caption{\label{fig-city}Cidades com maiores desflorestamento na
+Amazônia legal.}
+
+\end{figure}
+
+\section{Ajuste Inicial}
+
+A construção e avaliação numérica dos Estimadores de Máxima
+Verossimilhança (EMV) foi realizado via implementação da
+log-verossimilhança negativa, assim a otimização computacional com a
+função \texttt{minimize} e o método Nelder-Mead, ambos da biblioteca
+\texttt{scipy} e assim, como toda a construção do presente trabalho foi
+desenvolvida em python.
+
+Assim utilizamos como chute inicial \(\alpha = 0.5\) e \(\beta = 1\), e
+como é possível observar nos ajustes de densidade das
+Figura~\ref{fig-kde} e Figura~\ref{fig-theoric-density}, foi obtido um
+ajuste razoável, se ajustando de maneira coerente ao histrograma,
+ficando os EMVs \(\widehat{\alpha}\) =
+\texttt{python\ criterios{[}\textquotesingle{}alpha\textquotesingle{}{]}}
+e \(\widehat{\beta}\) =
+\texttt{python\ criterios{[}\textquotesingle{}beta\textquotesingle{}{]}}.
+
+\begin{figure}[H]
+
+{\centering \includegraphics{report_files/figure-pdf/fig-kde-output-1.pdf}
+
+}
+
+\caption{\label{fig-kde}Densidade ajustada por KDE.}
+
+\end{figure}
+
+\begin{figure}[H]
+
+{\centering \includegraphics{report_files/figure-pdf/fig-theoric-density-output-1.pdf}
+
+}
+
+\caption{\label{fig-theoric-density}Ajuste da densidade teórica.}
+
+\end{figure}
+
+\subsection{Medidas Básicas}
+
+\section{\centering Ajuste do Modelo}
+
+Para a verificação da adequação da distribuição Kumaraswamy para
+modelagem de dados de desmatamento iremos realizar a comparação com duas
+distribuições amplamente utilizadas: Distribuição Normal e a
+Distribuição beta, a distribuição mais utilizada para variáveis
+aleatórias com suporte no (0,1).
+
+A comparação foi construída utilizando 6 métricas: AIC, BIC, CAIC,
+Kolmogorov-Smirnov, Cramer-Von Mises e Anderson-Darling, que se baseiam
+principalmente na verossimilhança. A verossimilhança a considera os
+parâmetros variáveis, assim a função de verossimilhança indica os
+parâmetros mais plausíveis de terem gerado a amostra. Logo, podemos
+verificar entre todas as distribuições quais possuem as maiores
+verossimilhanças, tendo assim os parâmetros mais plausíveis para a
+geração da amostra. No entanto, nota-se que todos os critérios contam
+outros elementos para a sua construção.
+
+\hypertarget{tbl-planet-measures}{}
+\begin{longtable}[]{@{}lrrrl@{}}
+\caption{\label{tbl-planet-measures}Métricas para comparação da
+Distribuição Kumaraswamy em contraste à Distribuição Normal e
+Beta}\tabularnewline
+\toprule()
+& Kumaraswamy & Beta & Normal & Vencedor \\
+\midrule()
+\endfirsthead
+\toprule()
+& Kumaraswamy & Beta & Normal & Vencedor \\
+\midrule()
+\endhead
+AIC & -440.934 & -443.086 & -154637 & Normal \\
+BIC & -440.918 & -433.82 & -154628 & Normal \\
+CAIC & -431.667 & -443.07 & -154637 & Normal \\
+AD & 18.1063 & 9.73665 & 767.893 & Beta \\
+CVM & 9.69198 & 1.25157 & 64.3781 & Beta \\
+KS & 0.0887461 & 0.0891663 & 0.537076 & Kumaraswamy \\
+\bottomrule()
+\end{longtable}
+
+É intrigante o exposto pela Tabela~\ref{tbl-planet-measures}, onde
+podemos perceber que todas as distribuições ganham em alguma métrica, a
+Distribuição Normal se notabiliza por ter ganhado em todas as métricas
+que levam em consideração a verossimilhança diretamente. Enquanto as
+Distribuições Unitárias evidenciaram-se em métricas mais adequadas para
+Distribuições não encaixadas, assim é possível dizer que a Kumaraswamy é
+uma possível competidora para a Distribuição Beta em modelos
+incondicionais.
+
+\section{\centering Conclusão}
+
+Neste trabalho analisamos em especial a Distribuição Kumaraswamy, junto
+com o banco de dados para a taxa de desfloresmento em diversos
+munícipios da Amazônia Legal. De tal forma a ser comparada com outras
+duas distribuições, a Distribuição Beta e a Distribuição Normal.
+
+A Distribuição Kumaraswamy é uma grande concorrente da Distribuição
+Beta, e por conta de possuir cdf de forma fechada, ao contrário da
+distribuição Beta, tem uma maior relevância na utilização em questões de
+simulação.
+
+Desta forma, conseguimos perceber que a Distribuição Kumaraswamy
+demostrou-se realmente uma grande concorrente da Distribuição Beta.
+Porém, a Distribuição Beta ainda conseguiu se sair melhor, ganhando em
+praticamente todas as métricas, quando as duas comparadas separadamente
+(descartando a Normal), apenas no teste de KS a Distribuição Kumaraswamy
+se saiu melhor. Portanto, a distribuição que melhor representou os dados
+de desflorestamento da Amazônia Legal foi a Distribuição Beta.
+
+\section{\centering Referências}
+
+\hypertarget{refs}{}
+\begin{CSLReferences}{1}{0}
+\leavevmode\vadjust pre{\hypertarget{ref-bayer2017kumaraswamy}{}}%
+Bayer, Fábio Mariano, Débora Missio Bayer, e Guilherme Pumi. 2017.
+{"Kumaraswamy autoregressive moving average models for double bounded
+environmental data"}. \emph{Journal of Hydrology} 555: 385--96.
+
+\leavevmode\vadjust pre{\hypertarget{ref-bayer2021inflated}{}}%
+Bayer, Fábio M, Francisco Cribari-Neto, e Jéssica Santos. 2021.
+{"Inflated Kumaraswamy regressions with application to water supply and
+sanitation in Brazil"}. \emph{Statistica Neerlandica} 75 (4): 453--81.
+
+\leavevmode\vadjust pre{\hypertarget{ref-cribari2019inflated}{}}%
+Cribari-Neto, Francisco, e Jessica Santos. 2019. {"Inflated Kumaraswamy
+distributions"}. \emph{Anais da Academia Brasileira de Ci{ê}ncias} 91.
+
+\leavevmode\vadjust pre{\hypertarget{ref-dey2018kumaraswamy}{}}%
+Dey, Sanku, Josmar Mazucheli, e Saralees Nadarajah. 2018. {"Kumaraswamy
+distribution: different methods of estimation"}. \emph{Computational and
+Applied Mathematics} 37 (2): 2094--2111.
+
+\leavevmode\vadjust pre{\hypertarget{ref-fletcher}{}}%
+Fletcher, SG, e K Ponnambalam. 2008. {"Stochastic control of reservoir
+systems using indicator functions: new enhancements"}. \emph{Water
+Resources Research} 44 (12).
+
+\leavevmode\vadjust pre{\hypertarget{ref-ganji2006grain}{}}%
+Ganji, A, K Ponnambalam, D Khalili, e M Karamouz. 2006. {"Grain yield
+reliability analysis with crop water demand uncertainty"}.
+\emph{Stochastic Environmental Research and Risk Assessment} 20 (4):
+259--77.
+
+\leavevmode\vadjust pre{\hypertarget{ref-koutsoyiannis}{}}%
+Koutsoyiannis, Demetris, e Themistocle Xanthopoulos. 1989. {"On the
+parametric approach to unit hydrograph identification"}. \emph{Water
+resources management} 3 (2): 107--28.
+
+\leavevmode\vadjust pre{\hypertarget{ref-kuma}{}}%
+Kumaraswamy, Ponnambalam. 1980. {"A generalized probability density
+function for double-bounded random processes"}. \emph{Journal of
+hydrology} 46 (1-2): 79--88.
+
+\leavevmode\vadjust pre{\hypertarget{ref-lemonte2013exponentiated}{}}%
+Lemonte, Artur J, Wagner Barreto-Souza, e Gauss M Cordeiro. 2013. {"The
+exponentiated Kumaraswamy distribution and its log-transform"}.
+\emph{Brazilian Journal of Probability and Statistics} 27 (1): 31--53.
+
+\leavevmode\vadjust pre{\hypertarget{ref-mazucheli2020unit}{}}%
+Mazucheli, J, AFB Menezes, LB Fernandes, RP De Oliveira, e ME Ghitany.
+2020. {"The unit-Weibull distribution as an alternative to the
+Kumaraswamy distribution for the modeling of quantiles conditional on
+covariates"}. \emph{Journal of Applied Statistics} 47 (6): 954--74.
+
+\leavevmode\vadjust pre{\hypertarget{ref-mitnik2013new}{}}%
+Mitnik, Pablo A. 2013. {"New properties of the Kumaraswamy
+distribution"}. \emph{Communications in Statistics-Theory and Methods}
+42 (5): 741--55.
+
+\leavevmode\vadjust pre{\hypertarget{ref-mitnik2013kumaraswamy}{}}%
+Mitnik, Pablo A, e Sunyoung Baek. 2013. {"The Kumaraswamy distribution:
+median-dispersion re-parameterizations for regression modeling and
+simulation-based estimation"}. \emph{Statistical Papers} 54 (1):
+177--92.
+
+\leavevmode\vadjust pre{\hypertarget{ref-nadarajah2008distribution}{}}%
+Nadarajah, Saralees. 2008. {"On the distribution of Kumaraswamy"}.
+\emph{Journal of Hydrology} 348 (3): 568--69.
+
+\leavevmode\vadjust pre{\hypertarget{ref-pumi2020kumaraswamy}{}}%
+Pumi, Guilherme, Cristine Rauber, e Fábio M Bayer. 2020. {"Kumaraswamy
+regression model with Aranda-Ordaz link function"}. \emph{Test} 29 (4):
+1051--71.
+
+\leavevmode\vadjust pre{\hypertarget{ref-r}{}}%
+R Core Team. 2022. \emph{R: A Language and Environment for Statistical
+Computing}. Vienna, Austria: R Foundation for Statistical Computing.
+\url{https://www.R-project.org/}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-sagrillo2021modified}{}}%
+Sagrillo, Murilo, Renata Rojas Guerra, e Fábio M Bayer. 2021. {"Modified
+Kumaraswamy distributions for double bounded hydro-environmental data"}.
+\emph{Journal of Hydrology} 603: 127021.
+
+\leavevmode\vadjust pre{\hypertarget{ref-sundar}{}}%
+Sundar, V, e K Subbiah. 1989. {"Application of double bounded
+probability density function for analysis of ocean waves"}. \emph{Ocean
+engineering} 16 (2): 193--200.
+
+\end{CSLReferences}
+
+
+
+\end{document}

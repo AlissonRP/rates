@@ -1,7 +1,7 @@
 ---
-title: "É o simplex!"
-subtitle: "Taxas e Proporções"
-author: "Alisson Rosa <br> <br>"
+title: "Distribuicão Kumaraswamy"
+subtitle: "E suas aplicações"
+author: "Alisson Rosa <br> Vítor Pereira <br> João Inácio <br>"
 institute: "Universidade Federal de Santa Maria"
 format: 
     revealjs:
@@ -12,7 +12,7 @@ format:
         controls: true
         width: 1190
         height: 720
-        bibliography: bib.bib
+        bibliography: model/bib.bib
         nocite: |
           @*
 ---
@@ -40,16 +40,10 @@ format:
 :::
 
 
-```{r setup, include=FALSE}
-options(htmltools.dir.version = FALSE)
-
-library(simplexreg)
-library(fastrep)
-
-```
 
 
-# Tudo tem um começo
+
+
 
 ## Motivação 
 
@@ -57,7 +51,15 @@ library(fastrep)
 <br />
 <br />
 
-- **Pouca existência na época de distribuições suportando dados de taxas.**
+- Foi introduzida em @kuma como uma alternativa ao  modelo beta para aplicações na área de hidrologia;
+
+- Como a distribuição tem atraído atenção e recente, inclusive por parte da comunidade da UFSM, resolvemos
+buscar outras modelagens por parte da Kumaraswamy;
+
+- O desfloramento é uma questão central para os próximos anos em políticas públicas, então um modelo estatístico
+para previsão e inferência, torna-se essencial para as tomadas de decisões.
+
+* Em virtude deste fato, grande parte dos trabalhos empíricos desta distribuição concentra-se nessa área @nadarajah2008distribution.
 
 <br />
 
@@ -67,9 +69,6 @@ library(fastrep)
 
 
 
-::: footer
-Época = Anos 80
-:::
 
 
 ## Quantidades básicas
@@ -77,18 +76,18 @@ library(fastrep)
 
 <br />
 
+- Seja X uma variável aleatória que segue uma distribuição Kumaraswamy, então sua Função de distribuição acumulada é dada por:
+
+\begin{align}
+F(x;\alpha, \beta) = 1 - (1 - x^\alpha)^\beta,  \quad 0 < x< 1
+\end{align}
+
+- E sua Função densidade de probabilidade (pdf) por consequência fica dada por:
+$$f(x;\alpha, \beta) = \dfrac{dF}{dx} =\alpha\beta x^{\alpha - 1}(1 - x^\alpha)^{\beta  - 1}, \quad 0<x<1$$
+
+* Onde $\alpha, \beta > 0$
 
 
-- Se X é r.v e tem distribuição simplex (padronizada), então sua função densidade de probabilidade (pdf) é dada por:
-
-$$f(x; \mu, \varphi)=\bigg\{\dfrac{\varphi}{2\pi x^3(1 - x)^{3}}\bigg\}^{\dfrac{1}{2}}\exp\bigg\{\dfrac{-\varphi(x - \mu)^2}{2x(1-x)\mu^2(1-\mu)^2}\bigg\}$$
-
-* Onde X e $\mu$ pertencem ao intervalo (0,1) e $\varphi > 0$
-
-
-<br />
-
-* Não tem forma fechada pra Função de distribuição acumulada (fda)
 
 
 
@@ -96,124 +95,175 @@ $$f(x; \mu, \varphi)=\bigg\{\dfrac{\varphi}{2\pi x^3(1 - x)^{3}}\bigg\}^{\dfrac{
 
 ## Quantidades Básicas
 
-Em @barndorff1991some é demonstrado algumas propriedades básicas dada a seguir:
+Sua qf, que é  a função inversa da cdf, fica definida como:
+
+\begin{align}
+Q(u;\alpha, \beta) = \bigg(1 - (1 - u)^{1/\beta}\bigg)^{\dfrac{1}{\alpha}}, \quad 0<u<1
+\end{align}
+
+É **FÁCIL** ver que que a esperança da distribuição Kumaraswamy é dada por  
+
+\begin{align}
+\text{E}(X) = \dfrac{\beta\Gamma\bigg(1 + \dfrac{1}{\alpha}\bigg)\Gamma(\beta)}{\Gamma\bigg(1 + \dfrac{1}{\alpha} + \beta\bigg)}
+\end{align}
+
+## Quantidades Básicas
+A função de verossimilhança é dada por:
+
+\begin{align}
+L(\alpha, \beta; x) = \prod_{i=1}^{n}f(x;\alpha, \beta) = \alpha^n \beta^n \prod_{i=1}^{n}x_i^{\alpha - 1}\prod_{i=1}^{n}(1-x_i^{\alpha})^{\beta-1}
+\end{align}
+
 <br />
 
-
-$$\text{E}(X) = \mu$$ 
-$$\text{Var}(X) = \mu(1 - \mu) - \sqrt{\dfrac{\varphi}{2}}\exp\bigg\{\dfrac{\varphi}{\mu^2(1-\mu)^2}\bigg\}\Gamma\bigg\{\dfrac{1}{2}, \dfrac{\varphi}{2\mu^2(1-\mu^2)}\bigg\}$$
+* Dessa maneira, os estimadores dos parâmetros são encontrados tais quais maximizam a função $L$
 
 <br />
 
-Onde $\Gamma(a,b) = \int_{b}^{\infty}t^{a-1}b^tdt$
-
-
-![](https://stickerly.pstatic.net/sticker_pack/gmCtSwxEQgkehtxGX6Ohhg/0E91E6/31/2519c2c6-833e-450a-be58-edd0e0e9187e.png){.absolute top=140 left=100 width="280" height="150"}
-
-
-<br />
-
-
-## Alguns gráficos {background-color="white"}
+* Nesse caso, a solução para o máximo de $L$ para os dados observados é encontrado usando a biblioteca `scipy` da linguagem Python
 
 
 
 
-```{r}
-library(simplexreg)
-library(tidyverse)
-library(patchwork)
 
 
 
+## Densidade para alguns valores de parâmetros
 
-rsimplex(n = 500, mu = 0.1, sig = 5) |> 
-  as_tibble() |> 
-  ggplot(aes(value)) + 
-  geom_density() +
-  theme_bw() +
-  labs(title = "Parametro de dispersão igual a 5") +
-  rsimplex(n = 500, mu = 0.1, sig = 0.01) |> 
-  as_tibble() |> 
-  ggplot(aes(value)) + 
-  geom_density() +
-  theme_bw() +
-  labs(title = "Parametro de dispersão igual a 0.01")
+```{python}
+from model.Kuma import Kuma
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+from model.utils import bar_ploto
+from model.utils import bar_ploto, AD_beta, AD_norm, AIC, BIC, CAIC, llnorm, betaNLL
+import pandas as pd
+from scipy import stats
+from scipy.optimize import minimize
+
+kuma = Kuma(0.5, 0.5)
+prm={"figure.figsize":(8, 4),
+'figure.dpi':150}
+plt.rcParams.update(prm)
+plt.rc('legend', fontsize=10)
+
+df = pd.read_csv("data/desmatamento.prop.csv").drop(["Unnamed: 0"], axis=1)
+df.rename(columns={"desmatamento_pro": "prop"}, inplace=True)
 
 
+x = np.random.uniform(0, 1, 50000)
+sns.kdeplot(Kuma(0.5, 0.5).quantile(x))
+sns.kdeplot(Kuma(2, 5).quantile(x))
+sns.kdeplot(Kuma(1, 2).quantile(x))
+plt.xlim([-0.009, 1.009])
+plt.legend(title="Parâmetros", loc="upper right", labels=["$\\alpha = 0.5, \\beta = 0.5$","$\\alpha = 2, \\beta = 5$", "$\\alpha = 1, \\beta = 2$"]);
 
 ```
-
-
-
-
-
-## Informações adicionais
-
-Se $\varphi^2 \to \infty$ então
-$$\dfrac{X -\mu}{\varphi\sqrt{V(\mu)}} \to N(0,1)$$
-
-
-Onde $V(\mu) = \mu^3(1-\mu)^3$
-
-* Assim pela proposição anterior, podemos calcular a acumulada/quantil quando temos o parâmetro de dispersão convergindo pra zero.
-
-* Caso contrario usamos integração numérica.
 
 
 # Aplicações (ão)
 
-## Modelo de regressão Simplex
+## Banco de dados
 
-Seja $Y_1, Y_2,... Y_n$ variáveis aleatórias independentes onde cada uma segue uma distribuição simplex com média $\mu_t$, assim o modelo de regressão simplex fica definido como:
+Nosso banco é proveniente do projeto PRODES do INPE disponilizado [aqui](http://www.dpi.inpe.br/prodesdigital/prodesmunicipal.php). Sendo transformado por nós ficando com apenas três variáveis:
 
-$$
-g(\mu_t) = \sum_{i=1}^{k}x_{ti}\beta_i
-$$
+<br />
+<br />
 
-Em que o $g: (0,1) \to 	\mathbb{R}$ e os $\beta's$ são os parâmetros a serem estimados.
+- Taxa de desflorestamento: Área desmatada até 2021 sobre Área do município;
+- Estado;
+- Município.
+<br />
 
 ::: footer
-Sim, existe uma restrição para o parâmetro de precisão/forma também
+Taxa maior que 1?
 :::
 
-## Aplicação {background-color="white"}
 
-* *longitudinal study of decay of intraocular gas (C3F8)*
+## Medidas  Básicas
 
-
-```{r, echo = T}
-library(simplexreg)
-data("retinal", package = "simplexreg")
-model <- simplexreg(Gas ~ LogT + LogT2 + Level | LogT + Level | Time, corr = "AR1", id = ID, data = retinal)
-
-final_model = model |> summary()
-
-
-final_model$coefficients$mean |> fastrep::tbl()
+```{python}
+df[['prop']].describe()
 ```
+
+::: footer
+prop = Proporção
+:::
+
+## Média de desmatamento por estados
+
+```{python}
+bar_ploto(df)
+```
+
+## Ajuste do modelo
+
+```{python}
+df['prop'] = np.where(df['prop'] >= 1, 0.99, df['prop'])
+df['prop'] = np.where(df['prop'] <= 0, 0.01, df['prop'])
+prop = df['prop']
+
+kuma.fit(theta = [0.5, 1], data = prop,  change=True)
+
+kuma.plot(prop)
+
+criterios = kuma.metrics(prop)
+criterios_kuma = [criterios['AIC'], criterios['AICc'], criterios['BIC'], criterios['cramer_vonmises'], criterios['AD'], criterios['KS']]
+theta0 = [0.5, 1]
+mle = minimize(llnorm, x0=theta0, method="Nelder-Mead", args=(prop))
+res = stats.cramervonmises(prop, 'norm',  args=(mle.x[0], mle.x[1]))
+res1 = stats.kstest(prop, 'norm',  args=(mle.x[0], mle.x[1]))
+AD_norm(prop, mle.x[0], mle.x[1])
+AIC(mle.fun, len(mle.x))
+BIC(mle.fun, len(mle.x), len(prop))
+CAIC(mle.fun, len(mle.x), len(prop))
+criterios = kuma.metrics(prop)
+criterios_normal = ([AIC(mle.fun, len(mle.x)), BIC(mle.fun, len(mle.x), len(prop)), CAIC(mle.fun, len(mle.x), len(prop)),
+                    AD_norm(prop, mle.x[0], mle.x[1]), res.statistic, res1.statistic])
+
+mle = minimize(betaNLL, x0=theta0, method="Nelder-Mead", args=(prop))
+res = stats.cramervonmises(prop, 'beta',  args=(mle.x[0], mle.x[1]))
+res1 = stats.kstest(prop, 'beta',  args=(mle.x[0], mle.x[1]))
+AD_beta(prop, mle.x[0], mle.x[1])
+AIC(mle.fun, len(mle.x))
+BIC(mle.fun, len(mle.x), len(prop))
+CAIC(mle.fun, len(mle.x), len(prop))
+criterios_beta = ([AIC(mle.fun, len(mle.x)), BIC(mle.fun, len(mle.x), len(prop)), CAIC(mle.fun, len(mle.x), len(prop)),
+                    AD_beta(prop, mle.x[0], mle.x[1]), res.statistic, res1.statistic])
+vencedor = ['Normal', 'Normal', 'Normal', 'Normal', 'Normal', 'Normal']
+```
+
+## Métricas para cada distribuição
+
+```{python}
+
+pd.DataFrame({'Kumaraswamy' : criterios_kuma, 'Beta' : criterios_beta, 'Normal' : criterios_normal, 'Vencedor' : vencedor})
+
+```
+
+
+
 
 ## Nem tudo tem um fim
 <br />
 
-* Sim, é possível gerar números aleatórios com a distribuição Simplex
+* Perdeu em todas as métricas para Normal, mas teve um ajuste razoável em comparação com a Beta;
 
 <br />
 
-* A distribuição Simplex tem  mais foco em regressão
+* Distribuição Kumaraswamy teve um ajuste razoável com $\hat{\alpha}=0.5$ e $\hat{\beta}=1$;
 
 <br />
 
-* Pode ser considerado um modelo concorrente para o modelo de regressão beta
 
-* Leiam o paper @zhang2016simplexreg
+* Um competidora com as distribuições no (0,1) que com covariáveis pode ter melhor desempenho.
 
 
 
 ::: footer
-Mas vc sabia que o artigo da regressão beta tem #input$citações???
+Terminei o trabalho e ainda não sei escrever o nome da distribuição
 :::
 
-## Bibliografia
+## Bibliografia {.scrollable}
 
-![](https://media.tenor.com/OaFwdekCkuIAAAAC/evangelion-rei-plush.gif){.absolute top=370 left=100 width="100" height=290"}
+![](https://www.icegif.com/wp-content/uploads/icegif-800.gif){.absolute top=370 left=100 width="100" height=290"}
